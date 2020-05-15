@@ -21,7 +21,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs: []
     m_Floats:
-    - _Size: 0.09
+    - _Size: 0
     m_Colors:
     - _AlbedoColour: {r: 0, g: 0.23359418, b: 1, a: 0.7607843}
     - _EmissionColour: {r: 0.1711786, g: 0.3513666, b: 1.171222, a: 0}

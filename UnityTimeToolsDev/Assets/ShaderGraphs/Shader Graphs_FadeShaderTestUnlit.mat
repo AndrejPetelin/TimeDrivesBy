@@ -21,8 +21,11 @@ Material:
     serializedVersion: 3
     m_TexEnvs: []
     m_Floats:
-    - Vector1_25248A52: 1.06
-    - _Size: 0.776
+    - Boolean_A025DA7C: 0
+    - Vector1_25248A52: 1
+    - Vector1_4A016CE: 0.54
+    - Vector1_8E841: 0.79
+    - _Size: 0.472
     m_Colors:
     - _AlbedoColour: {r: 0.3647059, g: 0.4862745, b: 0.7490196, a: 0}
     - _EmissionColour: {r: 0, g: 0, b: 0, a: 0}

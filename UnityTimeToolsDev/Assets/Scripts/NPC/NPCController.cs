@@ -71,6 +71,11 @@ public class NPCController : MonoBehaviour
         return waypoints[waypoints.Length - 1].point;
     }
 
+    public void MoveTo(float t)
+    {
+        transform.position = PositionAtTime(t);
+    }
+
 
     void CalculateWaypoints()
     {
