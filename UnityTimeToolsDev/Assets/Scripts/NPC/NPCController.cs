@@ -28,6 +28,7 @@ public class NPCController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        path = new NavMeshPath();
         NavMeshHit hit;
 
         if (NavMesh.SamplePosition(endPoint, out hit, 5, NavMesh.AllAreas))
