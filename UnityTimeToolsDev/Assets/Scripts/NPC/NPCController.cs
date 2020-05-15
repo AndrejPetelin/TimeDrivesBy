@@ -62,7 +62,7 @@ public class NPCController : MonoBehaviour
                 float distA = waypoints[i - 1].distFromStart;
                 float distB = waypoints[i].distFromStart;
 
-                float t = distAtT - distA / distB - distA;
+                float t = (distAtT - distA) / (distB - distA);
 
                 return Vector3.Lerp(waypoints[i - 1].point, waypoints[i].point, t);
             }

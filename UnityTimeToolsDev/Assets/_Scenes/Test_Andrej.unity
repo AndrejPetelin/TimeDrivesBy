@@ -9455,7 +9455,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 1
-  target: {fileID: 1078598747}
+  startTime: 0
+  goal: {fileID: 0}
   waypoints: []
 --- !u!43 &1053122928
 Mesh:
