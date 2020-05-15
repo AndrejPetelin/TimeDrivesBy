@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Runtime.ExceptionServices;
+
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
@@ -63,7 +62,7 @@ public class NPCController : MonoBehaviour
                 float distB = waypoints[i].distFromStart;
 
                 float t = (distAtT - distA) / (distB - distA);
-
+                Debug.Log("T: " + t);
                 return Vector3.Lerp(waypoints[i - 1].point, waypoints[i].point, t);
             }
         }
