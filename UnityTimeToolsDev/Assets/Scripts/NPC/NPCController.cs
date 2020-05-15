@@ -9,12 +9,16 @@ using UnityEngine.AI;
 
 public class NPCController : MonoBehaviour
 {
-    public float speed;
+    [Tooltip("Speed in m/s")]
+    public float speed = 1;
 
-    public Transform target;
+    [Tooltip("Does not move before time exceeds this. Unit is seconds.")]
+    public float startTime;
+
+    [Tooltip("Endpoint of the path")]
+    public Transform goal;
 
     Vector3 startPoint;
-    Vector3 endPoint;
     NavMeshPath path;
     
     [SerializeField]
@@ -31,15 +35,10 @@ public class NPCController : MonoBehaviour
         path = new NavMeshPath();
         NavMeshHit hit;
 
-        if (NavMesh.SamplePosition(endPoint, out hit, 5, NavMesh.AllAreas))
-        {
-            endPoint = hit.position;
-        }
-
         if (NavMesh.SamplePosition(transform.position, out hit, 5, NavMesh.AllAreas))
         {
             startPoint = hit.position;
-            NavMesh.CalculatePath(startPoint, target.position, NavMesh.AllAreas, path);
+            NavMesh.CalculatePath(startPoint, goal.position, NavMesh.AllAreas, path);
             CalculateWaypoints();
         }
 
@@ -47,24 +46,14 @@ public class NPCController : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
 
     Vector3 PositionAtTime(float time)
     {
-        float distAtT = time * speed;
+        // if we're not yet at start time don't start driving yet
+        if (time < startTime) return waypoints[0].point;
 
-        /*
-        // if we've exceded the full distance travel time
-        if (distAtT > fullDistance)
-        {
-            return waypoints[waypoints.Length - 1].point;
-        }
-        */
+        // distance at time
+        float distAtT = (time - startTime) * speed;
 
         for (int i = 1; i < waypoints.Length; ++i)
         {
