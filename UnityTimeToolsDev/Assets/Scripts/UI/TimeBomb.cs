@@ -43,18 +43,26 @@ public class TimeBomb : MonoBehaviour
 	void ObjectFollowCursor(GameObject timeBomb, GameObject shadow)
 	{
 		Ray ray = mCamera.ScreenPointToRay(Input.mousePosition);
+       
 		Vector3 point = ray.origin + ray.direction * 60;
 		Debug.Log("Point " + point);
 		timeBomb.transform.position = point;
 		shadow.transform.position = new Vector3(point.x, 0f, point.z);
         RaycastHit hit;
 
-        
-		if (Input.GetMouseButtonDown(0) && Physics.Raycast(ray, out hit, Mathf.Infinity) )
+        // here we cast a ray and it will give us the point at which it hits a collider. 
+        Physics.Raycast(ray, out hit, Mathf.Infinity);
+        timeBomb.transform.position = hit.point;
+
+
+        if (Input.GetMouseButtonDown(0)  )
 		{
 			isCarrying = false;
             //timeBomb.transform.position = new Vector3(point.x, 0f, point.z);
             timeBomb.transform.position = hit.point;
+            // we enable the gem's collider here so that it doesn't collide agains the ray (we can
+            // fix this with layers. 
+            timeBomb.GetComponent<Collider>().enabled = true;
 			Destroy(shadow);
 		}
 		else if (Input.GetMouseButtonDown(1))
