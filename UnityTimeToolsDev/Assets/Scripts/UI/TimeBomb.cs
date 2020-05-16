@@ -9,6 +9,7 @@ public class TimeBomb : MonoBehaviour
 	Camera mCamera;
 	public GameObject prefab;
 	public GameObject shadowPrefab;
+    public LayerMask layerMask;
 	GameObject timeBomb;
 	GameObject shadow;
 
@@ -45,23 +46,28 @@ public class TimeBomb : MonoBehaviour
 		Ray ray = mCamera.ScreenPointToRay(Input.mousePosition);
        
 		Vector3 point = ray.origin + ray.direction * 60;
-		Debug.Log("Point " + point);
-		timeBomb.transform.position = point;
+		//Debug.Log("Point " + point);
+		//timeBomb.transform.position = point;
 		shadow.transform.position = new Vector3(point.x, 0f, point.z);
         RaycastHit hit;
 
         // here we cast a ray and it will give us the point at which it hits a collider. 
-        Physics.Raycast(ray, out hit, Mathf.Infinity);
-        timeBomb.transform.position = hit.point;
+        // we also use a LayerMask so that the gems don't fall on top of buildings (or end up hidden under them)
+        // This last part can probably be improved
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity) &&(1 << hit.collider.gameObject.layer) == layerMask)
+        {
+            //Debug.Log("HIT LAYER: " + hit.collider.gameObject.layer);
+            timeBomb.transform.position = hit.point;
+        }
+            
+            
 
 
         if (Input.GetMouseButtonDown(0)  )
 		{
 			isCarrying = false;
-            //timeBomb.transform.position = new Vector3(point.x, 0f, point.z);
-            timeBomb.transform.position = hit.point;
-            // we enable the gem's collider here so that it doesn't collide agains the ray (we can
-            // fix this with layers. 
+           
+            // we enable the gem's collider here so that it doesn't collide agains the ray 
             timeBomb.GetComponent<Collider>().enabled = true;
 			Destroy(shadow);
 		}
