@@ -2,22 +2,23 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.AI;
 
 public class TimeBomb : MonoBehaviour
 {
 	private bool isCarrying = false;
 	Camera mCamera;
 	public GameObject prefab;
-	public GameObject shadowPrefab;
-    public LayerMask layerMask;
+	//public LayerMask layerMask;
+	int areaMask;
 	GameObject timeBomb;
-	GameObject shadow;
 
 
 	// Start is called before the first frame update
 	void Start()
 	{
 		mCamera = Camera.main;
+		areaMask = 1 << NavMesh.GetAreaFromName("Walkable");
 	}
 
 
@@ -25,9 +26,8 @@ public class TimeBomb : MonoBehaviour
 	{
 		if (timeBomb != null && isCarrying)
 		{
-			ObjectFollowCursor(timeBomb, shadow);
+			ObjectFollowCursor(timeBomb);
 		}
-
 	}
 
 
@@ -35,47 +35,43 @@ public class TimeBomb : MonoBehaviour
 	{
 		Vector3 position = Input.mousePosition;
 		timeBomb = Instantiate(prefab, position, Quaternion.identity);
-		shadow = Instantiate(shadowPrefab, position, Quaternion.identity);
-		//Debug.Log("Object is created");
 		isCarrying = true;
 	}
 
 	
-	void ObjectFollowCursor(GameObject timeBomb, GameObject shadow)
+	void ObjectFollowCursor(GameObject timeBomb)
 	{
 		Ray ray = mCamera.ScreenPointToRay(Input.mousePosition);
-       
 		Vector3 point = ray.origin + ray.direction * 60;
-		//Debug.Log("Point " + point);
-		//timeBomb.transform.position = point;
-		shadow.transform.position = new Vector3(point.x, 0f, point.z);
         RaycastHit hit;
-
-        // here we cast a ray and it will give us the point at which it hits a collider. 
-        // we also use a LayerMask so that the gems don't fall on top of buildings (or end up hidden under them)
-        // This last part can probably be improved
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity) &&(1 << hit.collider.gameObject.layer) == layerMask)
+		// here we cast a ray and it will give us the point at which it hits a collider. 
+		// we also use a LayerMask so that the gems don't fall on top of buildings (or end up hidden under them)
+		// This last part can probably be improved
+		/*if (Physics.Raycast(ray, out hit, Mathf.Infinity) &&(1 << hit.collider.gameObject.layer) == layerMask)
         {
             //Debug.Log("HIT LAYER: " + hit.collider.gameObject.layer);
             timeBomb.transform.position = hit.point;
-        }
-            
-            
+        }*/
 
-
-        if (Input.GetMouseButtonDown(0)  )
+		// Find nearest point on NaveMash Walkable area
+		if (Physics.Raycast(ray, out hit, Mathf.Infinity) && 
+		   (NavMesh.SamplePosition(hit.point, out NavMeshHit navMeshHit, 0.1f, areaMask)))
 		{
-			isCarrying = false;
-           
+			{
+				Debug.Log("Navmesh HIT position: " + navMeshHit.position);
+				timeBomb.transform.position = navMeshHit.position;
+			}
+		}
+
+		if (Input.GetMouseButtonDown(0)  )
+		{
+			isCarrying = false; 
             // we enable the gem's collider here so that it doesn't collide agains the ray 
-            timeBomb.GetComponent<Collider>().enabled = true;
-			Destroy(shadow);
+            //timeBomb.GetComponent<Collider>().enabled = true;
 		}
 		else if (Input.GetMouseButtonDown(1))
 		{
 			Destroy(timeBomb);
-			Destroy(shadow);
 		}
-
 	}
 }
