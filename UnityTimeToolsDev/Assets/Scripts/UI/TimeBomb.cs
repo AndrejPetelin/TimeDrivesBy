@@ -47,10 +47,14 @@ public class TimeBomb : MonoBehaviour
 		Debug.Log("Point " + point);
 		timeBomb.transform.position = point;
 		shadow.transform.position = new Vector3(point.x, 0f, point.z);
-		if (Input.GetMouseButtonDown(0))
+        RaycastHit hit;
+
+        
+		if (Input.GetMouseButtonDown(0) && Physics.Raycast(ray, out hit, Mathf.Infinity) )
 		{
 			isCarrying = false;
-			timeBomb.transform.position = new Vector3(point.x, 0f, point.z);
+            //timeBomb.transform.position = new Vector3(point.x, 0f, point.z);
+            timeBomb.transform.position = hit.point;
 			Destroy(shadow);
 		}
 		else if (Input.GetMouseButtonDown(1))
