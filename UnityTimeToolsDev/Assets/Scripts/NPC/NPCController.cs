@@ -11,6 +11,8 @@ public class NPCController : MonoBehaviour
     [Tooltip("Speed in m/s")]
     public float speed = 1;
 
+    public float rotTime = 0.5f;
+
     [Tooltip("Does not move before time exceeds this. Unit is seconds.")]
     public float startTime;
 
@@ -70,6 +72,10 @@ public class NPCController : MonoBehaviour
         return waypoints[waypoints.Length - 1].point;
     }
 
+
+
+
+
     public void MoveTo(float t)
     {
         transform.position = PositionAtTime(t);
@@ -90,6 +96,9 @@ public class NPCController : MonoBehaviour
 
             waypoints[i].point = path.corners[i];
             waypoints[i].distFromStart = currDist;
+
+            // TODO - check if this works correctly. Do we even need it? Could we just determine rotation on the fly?
+            waypoints[i - 1].direction = Quaternion.FromToRotation(Vector3.forward, (waypoints[i - 1].point - waypoints[i].point));
         }
     }
 
@@ -97,6 +106,7 @@ public class NPCController : MonoBehaviour
     public struct Waypoint
     {
         public Vector3 point;
+        public Quaternion direction;
         public float distFromStart;
     }
     
