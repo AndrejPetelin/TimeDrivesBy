@@ -11,6 +11,8 @@ public class NPCController : MonoBehaviour
     [Tooltip("Speed in m/s")]
     public float speed = 1;
 
+    public float rotTime = 0.5f;
+
     [Tooltip("Does not move before time exceeds this. Unit is seconds.")]
     public float startTime;
 
@@ -70,9 +72,38 @@ public class NPCController : MonoBehaviour
         return waypoints[waypoints.Length - 1].point;
     }
 
+
+
+    Quaternion RotationAtTime(float time)
+    {
+        // if we're not yet at start time don't start driving yet
+        if (time < startTime) return waypoints[0].rotation;
+
+        // distance at time
+        float distAtT = (time - startTime) * speed;
+
+        for (int i = 1; i < waypoints.Length; ++i)
+        {
+            if (waypoints[i].distFromStart > distAtT)
+            {
+                float distA = waypoints[i - 1].distFromStart;
+                float distB = waypoints[i].distFromStart;
+
+                float t = (distAtT - distA) / (distB - distA);
+                Debug.Log("T: " + t);
+                return waypoints[i - 1].rotation;
+            }
+        }
+
+        return waypoints[waypoints.Length - 1].rotation;
+    }
+
+
+
     public void MoveTo(float t)
     {
         transform.position = PositionAtTime(t);
+        transform.rotation = RotationAtTime(t);
     }
 
 
@@ -90,13 +121,20 @@ public class NPCController : MonoBehaviour
 
             waypoints[i].point = path.corners[i];
             waypoints[i].distFromStart = currDist;
+
+            // TODO - check if this works correctly. Do we even need it? Could we just determine rotation on the fly?
+            waypoints[i - 1].rotation = Quaternion.FromToRotation(Vector3.left, (waypoints[i - 1].point - waypoints[i].point));
         }
+
+        waypoints[waypoints.Length - 1].rotation = waypoints[waypoints.Length - 2].rotation;
     }
+
 
     [Serializable]
     public struct Waypoint
     {
         public Vector3 point;
+        public Quaternion rotation;
         public float distFromStart;
     }
     
