@@ -3,7 +3,42 @@ guid: f884b9420bc0b8048a119ef950c18549
 ModelImporter:
   serializedVersion: 19300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.001
+    second: {fileID: 2100000, guid: cf72be3c058b8fd4abc726982139e768, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: No Name
+    second: {fileID: 2100000, guid: 6c098759176966b468fcadfb80176838, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: overlay
+    second: {fileID: 2100000, guid: d83daad41a48d574491fccdfa1acc060, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: roads_residential
+    second: {fileID: 2100000, guid: fd619907028befe4f965d6919fb1a3af, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: roof
+    second: {fileID: 2100000, guid: f4ee2b659f756004681ab6767e7e6ec3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: vegetation
+    second: {fileID: 2100000, guid: a6dda8499b873264c834c7b5f0b1526f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: wall
+    second: {fileID: 2100000, guid: f6d737861ea66d14eb7ce87b533394e8, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
