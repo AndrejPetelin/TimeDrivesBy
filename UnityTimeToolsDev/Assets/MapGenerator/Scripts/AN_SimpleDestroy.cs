@@ -12,7 +12,7 @@ public class AN_SimpleDestroy : MonoBehaviour
 
     int i;
     
-    void Start()
+   /* void Start()
     {
         Debug.Log("START?");
         if (DestroyChildrens)
@@ -23,6 +23,19 @@ public class AN_SimpleDestroy : MonoBehaviour
         {
             i = Random.Range(0, 100);
             if (i > Chance) DestroyImmediate (gameObject);
+        }
+    }*/
+
+    public void ProcessChildren()
+    {
+        if (DestroyChildrens)
+        {
+            Delete();
+        }
+        else
+        {
+            i = Random.Range(0, 100);
+            if (i > Chance) DestroyImmediate(gameObject);
         }
     }
 

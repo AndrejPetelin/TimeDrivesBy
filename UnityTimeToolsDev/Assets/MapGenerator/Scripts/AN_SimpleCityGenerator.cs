@@ -24,9 +24,9 @@ public class AN_SimpleCityGenerator : MonoBehaviour
         Vacant = new List<Vector2Int>();
 
         Debug.Log("Generating in game object : " + gameObject.name);
-        MapLength = Mathf.FloorToInt(Mathf.Sqrt( CityZoneCount ) );
+        MapLength = Mathf.FloorToInt(Mathf.Sqrt(CityZoneCount));
         IntMap = new int[MapLength, MapLength];
-       // IntMap[MapLength / 2, MapLength / 2] = 1;
+        // IntMap[MapLength / 2, MapLength / 2] = 1;
 
         Debug.Log("Length of sqare map : " + MapLength + ", city centre : " + MapLength / 2 + " : " + MapLength / 2);
 
@@ -38,6 +38,7 @@ public class AN_SimpleCityGenerator : MonoBehaviour
 
         CalculateCity();
         BuildCity(); // StartCoroutine( BuildCity() );
+        ProcessPrefabs();
     }
 
     public void CalculateCityZone() // array IntMap is a city territory
@@ -45,8 +46,8 @@ public class AN_SimpleCityGenerator : MonoBehaviour
         for (int i = 0; i < CityZoneCount; i++)
         {
             if (Vacant.Count <= 0) break;
-            Vector2Int Pos = Vacant[Random.Range(0, Vacant.Count-1)];
-           // Debug.Log("POS: " + Pos);
+            Vector2Int Pos = Vacant[Random.Range(0, Vacant.Count - 1)];
+            // Debug.Log("POS: " + Pos);
             Vacant.Remove(Pos);
 
             IntMap[Pos.x, Pos.y] = 1;
@@ -60,12 +61,12 @@ public class AN_SimpleCityGenerator : MonoBehaviour
         int[] weights = { List1x1Chance, List1x2Chance, ListAngleChance, listSquareChance };
         int totalWeights = 0;
         foreach (int x in weights) totalWeights += x;
-        
+
         for (int i = 0; i < MapLength; ++i)
         {
             for (int j = 0; j < MapLength; ++j)
             {
-            
+
                 int x = Random.Range(0, totalWeights);
                 Debug.Log("LENGTH: " + weights.Length);
                 for (int k = 0; k < weights.Length; ++k)
@@ -84,7 +85,7 @@ public class AN_SimpleCityGenerator : MonoBehaviour
                 {
                     case (3):
                         {
-                            if (InsertSqare(new Vector2Int(i,j)))
+                            if (InsertSqare(new Vector2Int(i, j)))
                                 break;
                             else goto case 2;
                         }
@@ -102,13 +103,23 @@ public class AN_SimpleCityGenerator : MonoBehaviour
                         }
                     case (0):
                         {
-                            if (IntMap[i, j] == 0 ) IntMap[i, j] = 1;
+                            if (IntMap[i, j] == 0) IntMap[i, j] = 1;
                             break;
                         }
                     default:
                         break;
                 }
             }
+        }
+    }
+
+    void ProcessPrefabs()
+    {
+        AN_SimpleDestroy[] prefabs = FindObjectsOfType<AN_SimpleDestroy>();
+
+        for (int i = 0; i < prefabs.Length; ++i)
+        {
+            prefabs[i].ProcessChildren();
         }
     }
 
@@ -271,14 +282,14 @@ public class AN_SimpleCityGenerator : MonoBehaviour
                     case (1): // 1x1
                         {
                             selected = SelectPrefab(List1x1);
-                            Instantiate( List1x1[selected].gameObject, new Vector3Int(x , 0, y ) * SqareLength + CityCentre, Quaternion.Euler(0, 90 * Random.Range(0,4), 0) );
+                            Instantiate( List1x1[selected].gameObject, new Vector3(x , 0, y ) * SqareLength + CityCentre, Quaternion.Euler(0, 90 * Random.Range(0,4), 0) );
                             break;
                         }
                     case (21): // 1x2
                         {
                             selected = SelectPrefab(List1x2);
                             Instantiate(List1x2[selected].gameObject, 
-                                new Vector3Int(x * SqareLength + SqareLength - SqareLength/2, 0, y  * SqareLength)  + CityCentre, 
+                                new Vector3(x * SqareLength + SqareLength - Mathf.Ceil(SqareLength / 2f), 0, y  * SqareLength)  + CityCentre, 
                                 Quaternion.Euler(0, 0, 0));
                             break;
                         }
@@ -286,7 +297,7 @@ public class AN_SimpleCityGenerator : MonoBehaviour
                         {
                             selected = SelectPrefab(List1x2);
                             Instantiate(List1x2[selected].gameObject, 
-                                new Vector3Int(x  * SqareLength , 0, y  * SqareLength + SqareLength / 2)  + CityCentre,
+                                new Vector3(x  * SqareLength , 0, y  * SqareLength + Mathf.Floor(SqareLength / 2f))  + CityCentre,
                                 Quaternion.Euler(0, -90, 0));
                             break;
                         }
@@ -294,7 +305,7 @@ public class AN_SimpleCityGenerator : MonoBehaviour
                         {
                             selected = SelectPrefab(ListAngle);
                             Instantiate(ListAngle[selected].gameObject,
-                                new Vector3Int(x * SqareLength + SqareLength / 2, 0, y * SqareLength + SqareLength / 2) + CityCentre,
+                                new Vector3(x * SqareLength + Mathf.Floor(SqareLength / 2f), 0, y * SqareLength + Mathf.Floor(SqareLength / 2f)) + CityCentre,
                                 Quaternion.Euler(0, 0, 0));
                             break;
                         }
@@ -302,7 +313,7 @@ public class AN_SimpleCityGenerator : MonoBehaviour
                         {
                             selected = SelectPrefab(ListAngle);
                             Instantiate(ListAngle[selected].gameObject,
-                                new Vector3Int(x * SqareLength , 0, y * SqareLength + SqareLength / 2) + CityCentre,
+                                new Vector3(x * SqareLength - Mathf.Ceil(SqareLength/2f) , 0, y * SqareLength + Mathf.Floor(SqareLength / 2f)) + CityCentre,
                                 Quaternion.Euler(0, -90, 0));
                             break;
                         }
@@ -310,7 +321,7 @@ public class AN_SimpleCityGenerator : MonoBehaviour
                         {
                             selected = SelectPrefab(ListSqare);
                             Instantiate(ListSqare[selected].gameObject,
-                                new Vector3Int(x  * SqareLength + SqareLength / 2, 0, y  * SqareLength + SqareLength / 2) + CityCentre,
+                                new Vector3(x  * SqareLength + Mathf.Floor( SqareLength / 2f), 0, y  * SqareLength + Mathf.Floor(SqareLength / 2f)) + CityCentre,
                                 Quaternion.Euler(0, 0, 0));
                             break;
                         }
@@ -318,7 +329,7 @@ public class AN_SimpleCityGenerator : MonoBehaviour
                         {
                             selected = SelectPrefab(ListSqare);
                             Instantiate(ListSqare[selected].gameObject, 
-                                new Vector3Int(x  * SqareLength + SqareLength /2 , 0, y  * SqareLength + SqareLength /2)   + CityCentre,
+                                new Vector3(x  * SqareLength + Mathf.Floor (SqareLength /2f) , 0, y  * SqareLength + SqareLength /2)   + CityCentre,
                                 Quaternion.Euler(0, 180, 0));
                             break;
                         }
