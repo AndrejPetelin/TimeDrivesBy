@@ -358,8 +358,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CityZoneCount: 80
-  BigSectorCount: 10000
-  SqareLength: 14
+  SquareLength: 20
   CityCentre: {x: 0, y: 0, z: 0}
   List1x1:
   - {fileID: 1582005263983972923, guid: 57efab88627912145a4d22b68dd483e0, type: 3}
@@ -373,6 +372,7 @@ MonoBehaviour:
   ListSqare:
   - {fileID: 6734110298962001455, guid: 9ed830ad680371643b6e8e4945e8a273, type: 3}
   listSquareChance: 50
+  strict: 0
 --- !u!4 &1092541474
 Transform:
   m_ObjectHideFlags: 0

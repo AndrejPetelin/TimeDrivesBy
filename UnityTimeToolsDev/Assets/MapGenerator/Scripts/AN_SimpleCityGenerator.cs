@@ -4,8 +4,15 @@ using UnityEngine;
 //[ExecuteInEditMode]
 public class AN_SimpleCityGenerator : MonoBehaviour
 {
-    public int CityZoneCount = 200, BigSectorCount = 500, SqareLength = 20;
+    [Tooltip("The size of the grid. It's the length of the grid sqared")]
+    public int CityZoneCount = 200;
+    [Tooltip("The length of the 'unit' block. Add more if spaces between blocks (roads) needed")]
+    public int SquareLength = 20;
+    [Tooltip("Where to center the city")]
     public Vector3Int CityCentre;
+
+    [Space]
+    [Header("Building blocks")]
     public AN_CitySample[] List1x1;
     public int List1x1Chance;
     public AN_CitySample[] List1x2;
@@ -15,6 +22,8 @@ public class AN_SimpleCityGenerator : MonoBehaviour
     public AN_CitySample[] ListSqare;
     public int listSquareChance;
 
+    [Tooltip("Do we want the layout to strictly keep a sqare grid shape?")]
+    public bool strict = true;
     int MapLength, CurrentBigSectorCount;
     int[,] IntMap;
     List<Vector2Int> Vacant;
@@ -30,12 +39,7 @@ public class AN_SimpleCityGenerator : MonoBehaviour
 
         Debug.Log("Length of sqare map : " + MapLength + ", city centre : " + MapLength / 2 + " : " + MapLength / 2);
 
-        CurrentBigSectorCount = BigSectorCount;
-        // CheckNeighbour(MapLength / 2, MapLength / 2);
-
-        //  CalculateCityZone();
-        // CalculateBigSectors();
-
+      
         CalculateCity();
         BuildCity(); // StartCoroutine( BuildCity() );
         ProcessPrefabs();
@@ -56,52 +60,62 @@ public class AN_SimpleCityGenerator : MonoBehaviour
         Debug.Log("City territory calculated");
     }
 
+    /* Calculates where to position each of the blocks into the city grid. 
+     * It uses weighted chance to determine which block to place at each location in the grid
+     */
     public void CalculateCity()
     {
+        // Add up all the chances into one variable. The value will be used as upper limit for random.
         int[] weights = { List1x1Chance, List1x2Chance, ListAngleChance, listSquareChance };
         int totalWeights = 0;
         foreach (int x in weights) totalWeights += x;
 
+        // Iterate the whole grid
         for (int i = 0; i < MapLength; ++i)
         {
             for (int j = 0; j < MapLength; ++j)
             {
+                // if current location is occupied, move to the next position in the grid
+                if (IntMap[i, j] != 0) continue;
 
                 int x = Random.Range(0, totalWeights);
-                Debug.Log("LENGTH: " + weights.Length);
+               // calculate weighted chance to choose what block to use
                 for (int k = 0; k < weights.Length; ++k)
                 {
                     if (x < weights[k])
                     {
-                        Debug.Log("IS IT SMALLER? ");
                         x = k;
                         break;
                     }
                     x -= weights[k];
                 }
-                if (IntMap[i, j] != 0) continue;
-                Debug.Log("X: " + x);
+                
+                //Debug.Log("X: " + x);
+                // call the corresponding function according to the block we have. If strict is in use, the switch will fall through to the next
+                // smaller when a larger block can't be placed. 
+                // NOTE: Yes, i'm using a GOTO. First time in 6 years!!! If anyone has a better idea, let me know :) 
+                // NOTE2: Yes, i'm using a GOTO. Please don't blame me!!! 
                 switch (x)
                 {
-                    case (3):
+                    case 3:
                         {
-                            if (InsertSqare(new Vector2Int(i, j)))
+                            if (InsertSqare(new Vector2Int(i, j)) || !strict)
                                 break;
                             else goto case 2;
                         }
-                    case (2):
+                    case 2:
                         {
-                            if (InsertAngle(new Vector2Int(i, j)))
+                            if (InsertAngle(new Vector2Int(i, j)) || !strict)
                                 break;
                             else goto case 1;
                         }
-                    case (1):
+                    case 1:
                         {
-                            if (InsertLong1x2(new Vector2Int(i, j)))
+                            if (InsertLong1x2(new Vector2Int(i, j)) || !strict)
                                 break;
                             else goto case 0;
                         }
-                    case (0):
+                    case 0:
                         {
                             if (IntMap[i, j] == 0) IntMap[i, j] = 1;
                             break;
@@ -113,59 +127,7 @@ public class AN_SimpleCityGenerator : MonoBehaviour
         }
     }
 
-    void ProcessPrefabs()
-    {
-        AN_SimpleDestroy[] prefabs = FindObjectsOfType<AN_SimpleDestroy>();
 
-        for (int i = 0; i < prefabs.Length; ++i)
-        {
-            prefabs[i].ProcessChildren();
-        }
-    }
-
-  /*  public void CalculateBigSectors()
-    {
-        // scaning city zone
-        for (int x = 0; x < IntMap.GetLength(0); x++)
-        {
-            for (int y = 0; y < IntMap.GetLength(1); y++)
-            {
-                if (IntMap[x, y] == 1) Vacant.Add(new Vector2Int(x, y));
-            }
-        }
-
-        // random instantiate big sectors in array
-        int limit = CityZoneCount;
-        while (CurrentBigSectorCount > 0 && limit > 0)
-        {
-            int i = Random.Range(0, 3);
-            switch (i)
-            {
-                case (0):
-                    {
-                        if (InsertSqare())
-                            break;
-                        else goto case 1;
-                    }
-                case (1):
-                    {
-                        if (InsertAngle())
-                            break;
-                        else goto case 2;
-                    }
-                case (2):
-                    {
-                        InsertLong1x2();
-                        break;
-                    }
-                default:
-                    break;
-            }
-            limit--;
-            if (limit < 1) Debug.Log("Big Sectors Limit achieved");
-        }
-        Debug.Log("Big sectors calculated");
-    }*/
 
     #region InsertBigSectorsVoids
 
@@ -282,14 +244,14 @@ public class AN_SimpleCityGenerator : MonoBehaviour
                     case (1): // 1x1
                         {
                             selected = SelectPrefab(List1x1);
-                            Instantiate( List1x1[selected].gameObject, new Vector3(x , 0, y ) * SqareLength + CityCentre, Quaternion.Euler(0, 90 * Random.Range(0,4), 0) );
+                            Instantiate( List1x1[selected].gameObject, new Vector3(x , 0, y ) * SquareLength + CityCentre, Quaternion.Euler(0, 90 * Random.Range(0,4), 0) );
                             break;
                         }
                     case (21): // 1x2
                         {
                             selected = SelectPrefab(List1x2);
                             Instantiate(List1x2[selected].gameObject, 
-                                new Vector3(x * SqareLength + SqareLength - Mathf.Ceil(SqareLength / 2f), 0, y  * SqareLength)  + CityCentre, 
+                                new Vector3(x * SquareLength + SquareLength - Mathf.Ceil(SquareLength / 2f), 0, y  * SquareLength)  + CityCentre, 
                                 Quaternion.Euler(0, 0, 0));
                             break;
                         }
@@ -297,7 +259,7 @@ public class AN_SimpleCityGenerator : MonoBehaviour
                         {
                             selected = SelectPrefab(List1x2);
                             Instantiate(List1x2[selected].gameObject, 
-                                new Vector3(x  * SqareLength , 0, y  * SqareLength + Mathf.Floor(SqareLength / 2f))  + CityCentre,
+                                new Vector3(x  * SquareLength , 0, y  * SquareLength + Mathf.Floor(SquareLength / 2f))  + CityCentre,
                                 Quaternion.Euler(0, -90, 0));
                             break;
                         }
@@ -305,7 +267,7 @@ public class AN_SimpleCityGenerator : MonoBehaviour
                         {
                             selected = SelectPrefab(ListAngle);
                             Instantiate(ListAngle[selected].gameObject,
-                                new Vector3(x * SqareLength + Mathf.Floor(SqareLength / 2f), 0, y * SqareLength + Mathf.Floor(SqareLength / 2f)) + CityCentre,
+                                new Vector3(x * SquareLength + Mathf.Floor(SquareLength / 2f), 0, y * SquareLength + Mathf.Floor(SquareLength / 2f)) + CityCentre,
                                 Quaternion.Euler(0, 0, 0));
                             break;
                         }
@@ -313,7 +275,7 @@ public class AN_SimpleCityGenerator : MonoBehaviour
                         {
                             selected = SelectPrefab(ListAngle);
                             Instantiate(ListAngle[selected].gameObject,
-                                new Vector3(x * SqareLength - Mathf.Ceil(SqareLength/2f) , 0, y * SqareLength + Mathf.Floor(SqareLength / 2f)) + CityCentre,
+                                new Vector3(x * SquareLength - Mathf.Ceil(SquareLength/2f) , 0, y * SquareLength + Mathf.Floor(SquareLength / 2f)) + CityCentre,
                                 Quaternion.Euler(0, -90, 0));
                             break;
                         }
@@ -321,7 +283,7 @@ public class AN_SimpleCityGenerator : MonoBehaviour
                         {
                             selected = SelectPrefab(ListSqare);
                             Instantiate(ListSqare[selected].gameObject,
-                                new Vector3(x  * SqareLength + Mathf.Floor( SqareLength / 2f), 0, y  * SqareLength + Mathf.Floor(SqareLength / 2f)) + CityCentre,
+                                new Vector3(x  * SquareLength + Mathf.Floor( SquareLength / 2f), 0, y  * SquareLength + Mathf.Floor(SquareLength / 2f)) + CityCentre,
                                 Quaternion.Euler(0, 0, 0));
                             break;
                         }
@@ -329,7 +291,7 @@ public class AN_SimpleCityGenerator : MonoBehaviour
                         {
                             selected = SelectPrefab(ListSqare);
                             Instantiate(ListSqare[selected].gameObject, 
-                                new Vector3(x  * SqareLength + Mathf.Floor (SqareLength /2f) , 0, y  * SqareLength + SqareLength /2)   + CityCentre,
+                                new Vector3(x  * SquareLength + Mathf.Floor (SquareLength /2f) , 0, y  * SquareLength + SquareLength /2)   + CityCentre,
                                 Quaternion.Euler(0, 180, 0));
                             break;
                         }
@@ -340,6 +302,19 @@ public class AN_SimpleCityGenerator : MonoBehaviour
             // yield return new WaitForSeconds(.001f);
         }
         Debug.Log("City was built");
+    }
+
+    /* Once all prefabs have been placed, find those that have the SimpleDestroy component and call the function
+     * that cleans up each prefab
+     */
+    void ProcessPrefabs()
+    {
+        AN_SimpleDestroy[] prefabs = FindObjectsOfType<AN_SimpleDestroy>();
+
+        for (int i = 0; i < prefabs.Length; ++i)
+        {
+            prefabs[i].ProcessChildren();
+        }
     }
 
     public void CheckNeighbour(int x, int y)
