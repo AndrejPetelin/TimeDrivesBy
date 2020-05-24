@@ -91,7 +91,8 @@ public class NavigationController : MonoBehaviour
 
                 float t = (distAtT - distA) / (distB - distA);
                 Debug.Log("T: " + t);
-                return waypoints[i - 1].rotation;
+                //  return waypoints[i - 1].rotation;
+                return Quaternion.Slerp(waypoints[i - 1].rotation, waypoints[i].rotation, t);
             }
         }
 
@@ -138,6 +139,7 @@ public class NavigationController : MonoBehaviour
         Waypoint wpt = new Waypoint();
         wpt.point = path.corners[0];
         wpt.distFromStart = 0;
+        wpt.rotation = transform.rotation;
         waypoints.Add(wpt);
 
         for (int i = 1; i < path.corners.Length; ++i)
@@ -155,12 +157,13 @@ public class NavigationController : MonoBehaviour
             // TODO - check if this works correctly. Do we even need it? Could we just determine rotation on the fly
             Quaternion rot = Quaternion.FromToRotation(Vector3.left, (waypoints[i - 1].point - waypoints[i].point));
 
-            waypoints[i - 1].rotation = rot;
-            
-            
+           // waypoints[i - 1].rotation = rot;
+            waypoints[i ].rotation = rot;
+
+
         }
 
-        waypoints[waypoints.Count - 1].rotation = waypoints[waypoints.Count - 2].rotation;
+      //  waypoints[waypoints.Count - 1].rotation = waypoints[waypoints.Count - 2].rotation;
     }
 
 
