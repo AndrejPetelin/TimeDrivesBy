@@ -7251,7 +7251,7 @@ MonoBehaviour:
   speed: 1
   rotTime: 0.5
   startTime: 0
-  goal: {fileID: 1078598747}
+  target: {fileID: 1078598747}
   waypoints: []
 --- !u!43 &1047536287
 Mesh:
@@ -9070,7 +9070,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-11050
+  m_Name: pb_Mesh17898
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
