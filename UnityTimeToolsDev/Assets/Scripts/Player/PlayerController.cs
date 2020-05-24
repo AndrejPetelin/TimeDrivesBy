@@ -12,13 +12,17 @@ public class PlayerController : NavigationController
     {
         Waypoint wp0 = new Waypoint(transform.position, transform.rotation, 0f);
         waypoints.Add(wp0);
+
+        ExtendPath();
     }
 
 
     /**
-     * Adds a new point at current time, should work (even if point is at the beginning or end of path?)
+     * Adds a new waypoint to the existing path at the current time, discarding everything after 
+     * our new location.
+     * this should work even if point is at the beginning or end of path (I think!)
      */
-    public void AddPointAtCurrentPos(float time)
+    public void AddWayointAtCurrentPos(float time)
     {
         // we're currently here on the path
         float pathTravelled = IndexAtTime(time);
@@ -41,8 +45,22 @@ public class PlayerController : NavigationController
     }
 
 
+    /**
+     * Adds points to the current target location from the last point on, preserving previous points
+     */
     public void ExtendPath()
     {
-        
+        NavMeshPath addedPath = new NavMeshPath();
+        NavMeshHit hit;
+
+        if (NavMesh.SamplePosition(target.position, out hit, 5, NavMesh.AllAreas))
+        {
+            Vector3 targetPosition = hit.position;
+            NavMesh.CalculatePath(waypoints[waypoints.Count - 1].point, targetPosition, NavMesh.AllAreas, addedPath);
+            CalculateWaypoints(addedPath, waypoints.Count);
+        }
     }
+
+
+
 }
