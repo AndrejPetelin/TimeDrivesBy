@@ -139,6 +139,7 @@ public class NavigationController : MonoBehaviour
         Waypoint wpt = new Waypoint();
         wpt.point = path.corners[0];
         wpt.distFromStart = 0;
+        // set the rotation of the waypoint to be the initial rotation of the transform
         wpt.rotation = transform.rotation;
         waypoints.Add(wpt);
 
@@ -158,6 +159,7 @@ public class NavigationController : MonoBehaviour
             Quaternion rot = Quaternion.FromToRotation(Vector3.left, (waypoints[i - 1].point - waypoints[i].point));
 
            // waypoints[i - 1].rotation = rot;
+           // since the waypoint[0] already has its rotation set up, we set the current one here. 
             waypoints[i ].rotation = rot;
 
 
