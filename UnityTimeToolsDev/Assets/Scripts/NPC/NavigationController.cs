@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class NPCController : MonoBehaviour
+public class NavigationController : MonoBehaviour
 {
     [Tooltip("Speed in m/s")]
     public float speed = 1;
@@ -23,9 +23,9 @@ public class NPCController : MonoBehaviour
     NavMeshPath path;
     
     [SerializeField]
-    Waypoint[] waypoints;
+    protected List<Waypoint> waypoints = new List<Waypoint>();
 
-    float fullDistance { get => waypoints[waypoints.Length - 1].distFromStart; }
+    protected float fullDistance { get => waypoints[waypoints.Count - 1].distFromStart; }
     
 
     
@@ -56,7 +56,7 @@ public class NPCController : MonoBehaviour
         // distance at time
         float distAtT = (time - startTime) * speed;
 
-        for (int i = 1; i < waypoints.Length; ++i)
+        for (int i = 1; i < waypoints.Count; ++i)
         {
             if (waypoints[i].distFromStart > distAtT)
             {
@@ -69,7 +69,7 @@ public class NPCController : MonoBehaviour
             }
         }
 
-        return waypoints[waypoints.Length - 1].point;
+        return waypoints[waypoints.Count - 1].point;
     }
 
 
@@ -82,7 +82,7 @@ public class NPCController : MonoBehaviour
         // distance at time
         float distAtT = (time - startTime) * speed;
 
-        for (int i = 1; i < waypoints.Length; ++i)
+        for (int i = 1; i < waypoints.Count; ++i)
         {
             if (waypoints[i].distFromStart > distAtT)
             {
@@ -95,9 +95,33 @@ public class NPCController : MonoBehaviour
             }
         }
 
-        return waypoints[waypoints.Length - 1].rotation;
+        return waypoints[waypoints.Count - 1].rotation;
     }
 
+
+    public float IndexAtTime(float time)
+    {
+        // if we're not yet at start time don't start driving yet
+        if (time < startTime) return 0f;
+
+        // distance at time
+        float distAtT = (time - startTime) * speed;
+
+
+        for (int i = 1; i < waypoints.Count; ++i)
+        {
+            if (waypoints[i].distFromStart > distAtT)
+            {
+                float distA = waypoints[i - 1].distFromStart;
+                float distB = waypoints[i].distFromStart;
+
+                float t = (distAtT - distA) / (distB - distA);
+                return i + t;
+            }
+        }
+
+        return waypoints.Count;
+    }
 
 
     public void MoveTo(float t)
@@ -110,29 +134,50 @@ public class NPCController : MonoBehaviour
     void CalculateWaypoints()
     {
         float currDist = 0;
-        waypoints = new Waypoint[path.corners.Length];
-        waypoints[0].point = path.corners[0];
-        waypoints[0].distFromStart = 0;
+        waypoints = new List<Waypoint>(path.corners.Length);
+        Waypoint wpt = new Waypoint();
+        wpt.point = path.corners[0];
+        wpt.distFromStart = 0;
+        waypoints.Add(wpt);
 
         for (int i = 1; i < path.corners.Length; ++i)
         {
             // total distance so far
             currDist += (path.corners[i] - path.corners[i - 1]).magnitude;
 
-            waypoints[i].point = path.corners[i];
-            waypoints[i].distFromStart = currDist;
+            Waypoint pt = new Waypoint();
+            pt.point = path.corners[0];
+            pt.point = path.corners[i];
+            pt.distFromStart = currDist;
 
-            // TODO - check if this works correctly. Do we even need it? Could we just determine rotation on the fly?
-            waypoints[i - 1].rotation = Quaternion.FromToRotation(Vector3.left, (waypoints[i - 1].point - waypoints[i].point));
+            waypoints.Add(pt);
+
+            // TODO - check if this works correctly. Do we even need it? Could we just determine rotation on the fly
+            Quaternion rot = Quaternion.FromToRotation(Vector3.left, (waypoints[i - 1].point - waypoints[i].point));
+
+            waypoints[i - 1].rotation = rot;
+            
+            
         }
 
-        waypoints[waypoints.Length - 1].rotation = waypoints[waypoints.Length - 2].rotation;
+        waypoints[waypoints.Count - 1].rotation = waypoints[waypoints.Count - 2].rotation;
     }
 
 
+
     [Serializable]
-    public struct Waypoint
+    public class Waypoint
     {
+        public Waypoint() { }
+
+        public Waypoint(Vector3 pt, Quaternion rot, float fromStart)
+        {
+            point = pt;
+            rotation = rot;
+            distFromStart = fromStart;
+        }
+
+
         public Vector3 point;
         public Quaternion rotation;
         public float distFromStart;
