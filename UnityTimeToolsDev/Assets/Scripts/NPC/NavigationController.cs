@@ -88,13 +88,16 @@ public class NavigationController : MonoBehaviour
                 float distA = waypoints[i - 1].distFromStart;
                 float distB = waypoints[i].distFromStart;
 
-                float t = (distAtT - distA) / (distB - distA);
-               // Debug.Log("T: " + t);
+                    float t = 5* (distAtT - distA) / (distB - distA);
+             //   float t = 0.5f* (distB - distAtT) / (distB - distA);
+                Debug.Log("T: " + t);
                 //  return waypoints[i - 1].rotation;
-                return Quaternion.Slerp(waypoints[i - 1].rotation, waypoints[i].rotation, t);
+                Debug.Log("ROT AT T: " + Quaternion.Slerp(waypoints[i - 1].rotation, waypoints[i].rotation, t).eulerAngles);
+                //  return Quaternion.Slerp(waypoints[i - 1].rotation, waypoints[i].rotation, t);
+                return Quaternion.Slerp(transform.rotation, waypoints[i].rotation, t);
             }
         }
-       // Debug.Log("SHOULD BE HERE: " + waypoints[waypoints.Count - 1].rotation.eulerAngles);
+        Debug.Log("SHOULD BE HERE: " + waypoints[waypoints.Count - 1].rotation.eulerAngles);
         return waypoints[waypoints.Count - 1].rotation;
     }
 
@@ -136,7 +139,7 @@ public class NavigationController : MonoBehaviour
     {
         transform.position = PositionAtTime(t);
         transform.rotation = RotationAtTime(t);
-      //  Debug.Log("WHO? : " + transform.gameObject.name + "ROT: " + transform.rotation.eulerAngles + " AT TIME: " + t);
+        Debug.Log("WHO? : " + transform.gameObject.name + "ROT: " + transform.rotation.eulerAngles + " AT TIME: " + t);
     }
 
 
@@ -196,14 +199,16 @@ public class NavigationController : MonoBehaviour
             currDist = waypoints[wptsOffset - 1].distFromStart;
             // fix rotation if we have one from the old list
             wpt.rotation = waypoints[wptsOffset - 1].rotation;
+           // Debug.Log("WPT ROT: " + wpt.rotation.eulerAngles);
         }
         else
         {
             waypoints = new List<Waypoint>(path.corners.Length);
+            waypoints.Add(wpt);
         }
         
         
-        waypoints.Add(wpt);
+        
 
         for (int i = 1; i < path.corners.Length; ++i)
         {
@@ -218,7 +223,7 @@ public class NavigationController : MonoBehaviour
             waypoints.Add(pt);
 
             // TODO - check if this works correctly. Do we even need it? Could we just determine rotation on the fly
-            Quaternion rot = Quaternion.FromToRotation(Vector3.left, (waypoints[i - 1].point - waypoints[i].point));
+            Quaternion rot = Quaternion.FromToRotation(Vector3.forward, (waypoints[i - 1].point - waypoints[i].point));
 
             // waypoints[i - 1].rotation = rot;
             // since the waypoint[0] already has its rotation set up, we set the current one here. 
@@ -227,7 +232,7 @@ public class NavigationController : MonoBehaviour
 
         }
 
-        waypoints[waypoints.Count - 1].rotation = waypoints[waypoints.Count - 2].rotation;
+      //  waypoints[waypoints.Count - 1].rotation = waypoints[waypoints.Count - 2].rotation;
         Debug.Log("AT CALC END: " + waypoints.Count);
     }
 
