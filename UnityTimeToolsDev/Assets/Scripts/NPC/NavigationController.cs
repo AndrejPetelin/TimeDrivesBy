@@ -63,7 +63,7 @@ public class NavigationController : MonoBehaviour
                 float distB = waypoints[i].distFromStart;
 
                 float t = (distAtT - distA) / (distB - distA);
-                Debug.Log("T: " + t);
+              //  Debug.Log("T: " + t);
                 return Vector3.Lerp(waypoints[i - 1].point, waypoints[i].point, t);
             }
         }
@@ -89,12 +89,12 @@ public class NavigationController : MonoBehaviour
                 float distB = waypoints[i].distFromStart;
 
                 float t = (distAtT - distA) / (distB - distA);
-                Debug.Log("T: " + t);
+               // Debug.Log("T: " + t);
                 //  return waypoints[i - 1].rotation;
                 return Quaternion.Slerp(waypoints[i - 1].rotation, waypoints[i].rotation, t);
             }
         }
-
+       // Debug.Log("SHOULD BE HERE: " + waypoints[waypoints.Count - 1].rotation.eulerAngles);
         return waypoints[waypoints.Count - 1].rotation;
     }
 
@@ -110,17 +110,25 @@ public class NavigationController : MonoBehaviour
 
         for (int i = 1; i < waypoints.Count; ++i)
         {
-            if (waypoints[i].distFromStart > distAtT)
+            // i think this should be < instead of > ? It works this way. The idea is to get our current index
+            // So it should only consider the waypoints behind us. 
+            if (waypoints[i].distFromStart < distAtT)
             {
                 float distA = waypoints[i - 1].distFromStart;
                 float distB = waypoints[i].distFromStart;
-
+               // Debug.Log("DIST A : " + distA + " DISTB : " + distB + "DISTATT: " + distAtT);
+               // a bit of a hack, i know, there was sometimes a division by zero, which happens if
+               // both waypoints are at the same place. 
+                if (Mathf.Approximately((distB - distA), 0)) continue;
                 float t = (distAtT - distA) / (distB - distA);
                 return i + t;
             }
         }
 
-        return waypoints.Count;
+        //return waypoints.Count;
+        // changed the return, considering the case the loop never starts, which is when the count is zero. 
+        // Probably the issue i had before was because of the if statement with the wrong > anyway. Too brain fried now!!
+        return 0;
     }
 
 
@@ -128,6 +136,7 @@ public class NavigationController : MonoBehaviour
     {
         transform.position = PositionAtTime(t);
         transform.rotation = RotationAtTime(t);
+      //  Debug.Log("WHO? : " + transform.gameObject.name + "ROT: " + transform.rotation.eulerAngles + " AT TIME: " + t);
     }
 
 
@@ -171,7 +180,7 @@ public class NavigationController : MonoBehaviour
     protected void CalculateWaypoints(NavMeshPath path, int wptsOffset)
     {
         float currDist = 0;
-
+        Debug.Log("AT CALC: " + waypoints.Count);
         Waypoint wpt = new Waypoint();
         wpt.point = path.corners[0];
         wpt.distFromStart = currDist;
@@ -219,6 +228,7 @@ public class NavigationController : MonoBehaviour
         }
 
         waypoints[waypoints.Count - 1].rotation = waypoints[waypoints.Count - 2].rotation;
+        Debug.Log("AT CALC END: " + waypoints.Count);
     }
 
 

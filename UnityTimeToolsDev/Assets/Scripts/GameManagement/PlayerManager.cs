@@ -29,7 +29,7 @@ public class PlayerManager : MonoBehaviour
     void Update()
     {
         // handling input here
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButtonDown(0))
         {
             Vector3 worldPos;
 
@@ -38,6 +38,7 @@ public class PlayerManager : MonoBehaviour
                 target.position = worldPos;
                 player.AddWaypointAtCurrentPos(timeManager.gameTime);
                 player.ExtendPath();
+                Debug.Log("HERE");
             }
         }
 
