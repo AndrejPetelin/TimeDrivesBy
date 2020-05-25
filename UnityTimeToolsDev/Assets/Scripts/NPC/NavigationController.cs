@@ -157,9 +157,9 @@ public class NavigationController : MonoBehaviour
             // TODO - check if this works correctly. Do we even need it? Could we just determine rotation on the fly
             Quaternion rot = Quaternion.FromToRotation(Vector3.left, (waypoints[i - 1].point - waypoints[i].point));
 
-           // waypoints[i - 1].rotation = rot;
-           // since the waypoint[0] already has its rotation set up, we set the current one here. 
-            waypoints[i ].rotation = rot;
+            // waypoints[i - 1].rotation = rot;
+            // since the waypoint[0] already has its rotation set up, we set the current one here. 
+            waypoints[i].rotation = rot;
 
 
         }
@@ -170,14 +170,30 @@ public class NavigationController : MonoBehaviour
 
     protected void CalculateWaypoints(NavMeshPath path, int wptsOffset)
     {
-        float currDist = wptsOffset < 0 ? 0 : waypoints[waypoints.Count - 1].distFromStart;
-        waypoints = new List<Waypoint>(path.corners.Length);
+        float currDist = 0;
+
         Waypoint wpt = new Waypoint();
         wpt.point = path.corners[0];
         wpt.distFromStart = currDist;
 
         // set the rotation of the waypoint to be the initial rotation of the transform
         wpt.rotation = transform.rotation;
+
+
+        // if there's a waypoint offset there are points already in the waypoints list, grab the distance from the last one
+        // otherwise create a new list that we'll then fill
+        if (wptsOffset > 0)
+        {
+            currDist = waypoints[wptsOffset - 1].distFromStart;
+            // fix rotation if we have one from the old list
+            wpt.rotation = waypoints[wptsOffset - 1].rotation;
+        }
+        else
+        {
+            waypoints = new List<Waypoint>(path.corners.Length);
+        }
+        
+        
         waypoints.Add(wpt);
 
         for (int i = 1; i < path.corners.Length; ++i)
@@ -202,7 +218,7 @@ public class NavigationController : MonoBehaviour
 
         }
 
-        //  waypoints[waypoints.Count - 1].rotation = waypoints[waypoints.Count - 2].rotation;
+        waypoints[waypoints.Count - 1].rotation = waypoints[waypoints.Count - 2].rotation;
     }
 
 

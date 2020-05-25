@@ -22,14 +22,14 @@ public class PlayerController : NavigationController
      * our new location.
      * this should work even if point is at the beginning or end of path (I think!)
      */
-    public void AddWayointAtCurrentPos(float time)
+    public void AddWaypointAtCurrentPos(float time)
     {
         // we're currently here on the path
         float pathTravelled = IndexAtTime(time);
         int index = (int)pathTravelled;
 
         // remove all waypoints on the timeline after our current location
-        for (int i = waypoints.Count - 1; i > index; --i)
+        for (int i = waypoints.Count - 1; i > index - 1; --i)
         {
             waypoints.RemoveAt(i);
         }
@@ -41,7 +41,7 @@ public class PlayerController : NavigationController
         waypoints.Add(newPoint);
 
         // recalculate rotation of the point before last (this is probably not needed, should be moving in the same direction anyway)
-        waypoints[waypoints.Count - 2].rotation = Quaternion.FromToRotation(Vector3.left, (waypoints[waypoints.Count - 1].point - waypoints[waypoints.Count - 2].point));
+        // waypoints[waypoints.Count - 2].rotation = Quaternion.FromToRotation(Vector3.left, (waypoints[waypoints.Count - 1].point - waypoints[waypoints.Count - 2].point));
     }
 
 
