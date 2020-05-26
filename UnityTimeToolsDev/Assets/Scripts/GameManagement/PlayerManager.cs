@@ -16,9 +16,12 @@ public class PlayerManager : MonoBehaviour
 
     Camera cam;
 
+    public bool placingTimeBomb;
+
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("PLAYER MAN");
         timeManager = GetComponent<TimeManager>();
         cam = Camera.main;
 
@@ -29,7 +32,7 @@ public class PlayerManager : MonoBehaviour
     void Update()
     {
         // handling input here
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && ! placingTimeBomb)
         {
             Vector3 worldPos;
 

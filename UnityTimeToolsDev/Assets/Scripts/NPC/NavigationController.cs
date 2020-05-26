@@ -10,6 +10,7 @@ public class NavigationController : MonoBehaviour
 {
     [Tooltip("Speed in m/s")]
     public float speed = 1;
+    float baseSpeed = 1;
 
     public float rotTime = 0.5f;
 
@@ -25,8 +26,8 @@ public class NavigationController : MonoBehaviour
     protected List<Waypoint> waypoints = new List<Waypoint>();
 
     protected float fullDistance { get => waypoints[waypoints.Count - 1].distFromStart; }
-    
 
+    public float turnDistance = 1f;
     
 
     // Start is called before the first frame update
@@ -39,6 +40,10 @@ public class NavigationController : MonoBehaviour
         {
             startPoint = hit.position;
             NavMesh.CalculatePath(startPoint, target.position, NavMesh.AllAreas, path);
+            for (int i = 0; i < path.corners.Length; ++i)
+            {
+                path.corners[i].y = 0f;
+            }
             CalculateWaypoints(path);
         }
 
@@ -88,16 +93,17 @@ public class NavigationController : MonoBehaviour
                 float distA = waypoints[i - 1].distFromStart;
                 float distB = waypoints[i].distFromStart;
 
-                    float t = 5* (distAtT - distA) / (distB - distA);
-             //   float t = 0.5f* (distB - distAtT) / (distB - distA);
-                Debug.Log("T: " + t);
+                float t = 5* (distAtT - distA) / (distB - distA);
+                //   float t = 0.5f* (distB - distAtT) / (distB - distA);
+              //  float t =  (distAtT - distA) / Mathf.Min( (distB - distA), turnDistance);
+                //   Debug.Log("T: " + t);
                 //  return waypoints[i - 1].rotation;
-                Debug.Log("ROT AT T: " + Quaternion.Slerp(waypoints[i - 1].rotation, waypoints[i].rotation, t).eulerAngles);
+                //   Debug.Log("ROT AT T: " + Quaternion.Slerp(waypoints[i - 1].rotation, waypoints[i].rotation, t).eulerAngles);
                 //  return Quaternion.Slerp(waypoints[i - 1].rotation, waypoints[i].rotation, t);
                 return Quaternion.Slerp(transform.rotation, waypoints[i].rotation, t);
             }
         }
-        Debug.Log("SHOULD BE HERE: " + waypoints[waypoints.Count - 1].rotation.eulerAngles);
+      //  Debug.Log("SHOULD BE HERE: " + waypoints[waypoints.Count - 1].rotation.eulerAngles);
         return waypoints[waypoints.Count - 1].rotation;
     }
 
@@ -139,11 +145,11 @@ public class NavigationController : MonoBehaviour
     {
         transform.position = PositionAtTime(t);
         transform.rotation = RotationAtTime(t);
-        Debug.Log("WHO? : " + transform.gameObject.name + "ROT: " + transform.rotation.eulerAngles + " AT TIME: " + t);
+       // Debug.Log("WHO? : " + transform.gameObject.name + "ROT: " + transform.rotation.eulerAngles + " AT TIME: " + t);
     }
 
 
-    void CalculateWaypoints(NavMeshPath path)
+    /*void CalculateWaypoints(NavMeshPath path)
     {
         float currDist = 0;
         waypoints = new List<Waypoint>(path.corners.Length);
@@ -177,10 +183,10 @@ public class NavigationController : MonoBehaviour
         }
 
       //  waypoints[waypoints.Count - 1].rotation = waypoints[waypoints.Count - 2].rotation;
-    }
+    }*/
 
 
-    protected void CalculateWaypoints(NavMeshPath path, int wptsOffset)
+    protected void CalculateWaypoints(NavMeshPath path, int wptsOffset = 0)
     {
         float currDist = 0;
         Debug.Log("AT CALC: " + waypoints.Count);
@@ -218,22 +224,49 @@ public class NavigationController : MonoBehaviour
             Waypoint pt = new Waypoint();
             pt.point = path.corners[0];
             pt.point = path.corners[i];
+            Debug.Log("POINT: " + pt.point);
             pt.distFromStart = currDist;
 
             waypoints.Add(pt);
 
             // TODO - check if this works correctly. Do we even need it? Could we just determine rotation on the fly
-            Quaternion rot = Quaternion.FromToRotation(Vector3.forward, (waypoints[i - 1].point - waypoints[i].point));
+            Vector3 pointA = waypoints[i - 1].point;
+            Vector3 pointB = waypoints[i].point;
+            pointA.y = 0f;
+            pointB.y = 0f;
+           
+            Quaternion rot = Quaternion.FromToRotation(transform.forward, (pointB - pointA).normalized);
 
             // waypoints[i - 1].rotation = rot;
             // since the waypoint[0] already has its rotation set up, we set the current one here. 
-            waypoints[i].rotation = rot;
+            waypoints[i].rotation = rot * transform.rotation;
 
 
         }
 
       //  waypoints[waypoints.Count - 1].rotation = waypoints[waypoints.Count - 2].rotation;
-        Debug.Log("AT CALC END: " + waypoints.Count);
+       // Debug.Log("AT CALC END: " + waypoints.Count);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+      //  Debug.Log("COLLISION BETWEEN: " + transform.gameObject.name + " AND: " + collision.gameObject.name);
+        TimeWarper warper = collision.gameObject.GetComponent<TimeWarper>();
+        if (warper != null)
+        {
+            speed *= warper.speedFactor;
+        
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        TimeWarper warper = collision.gameObject.GetComponent<TimeWarper>();
+        if (warper != null)
+        {
+            speed *= baseSpeed;
+
+        }
     }
 
 

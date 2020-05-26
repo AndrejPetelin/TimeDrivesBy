@@ -12,11 +12,13 @@ public class TimeBomb : MonoBehaviour
 	//public LayerMask layerMask;
 	int areaMask;
 	GameObject timeBomb;
+    public PlayerManager playerManager;
 
 
 	// Start is called before the first frame update
 	void Start()
 	{
+        Debug.Log("TIME BOMB");
 		mCamera = Camera.main;
 		areaMask = 1 << NavMesh.GetAreaFromName("Walkable");
 	}
@@ -36,7 +38,13 @@ public class TimeBomb : MonoBehaviour
 		Vector3 position = Input.mousePosition;
 		timeBomb = Instantiate(prefab, position, Quaternion.identity);
 		isCarrying = true;
+       // playerManager.placingTimeBomb = true;
 	}
+
+    public void DisableTargetPlacement()
+    {
+        playerManager.placingTimeBomb = true;
+    }
 
 	
 	void ObjectFollowCursor(GameObject timeBomb)
@@ -55,10 +63,10 @@ public class TimeBomb : MonoBehaviour
 
 		// Find nearest point on NaveMash Walkable area
 		if (Physics.Raycast(ray, out hit, Mathf.Infinity) && 
-		   (NavMesh.SamplePosition(hit.point, out NavMeshHit navMeshHit, 0.1f, areaMask)))
+		   (NavMesh.SamplePosition(hit.point, out NavMeshHit navMeshHit, 0.5f, areaMask)))
 		{
 			{
-				Debug.Log("Navmesh HIT position: " + navMeshHit.position);
+			//	Debug.Log("Navmesh HIT position: " + navMeshHit.position);
 				timeBomb.transform.position = navMeshHit.position;
 			}
 		}
@@ -67,11 +75,20 @@ public class TimeBomb : MonoBehaviour
 		{
 			isCarrying = false; 
             // we enable the gem's collider here so that it doesn't collide agains the ray 
-            //timeBomb.GetComponent<Collider>().enabled = true;
+            timeBomb.GetComponent<Collider>().enabled = true;
+            StartCoroutine(EnableTargetPlacement());
+          //  playerManager.placingTimeBomb = false;
 		}
 		else if (Input.GetMouseButtonDown(1))
 		{
 			Destroy(timeBomb);
 		}
 	}
+
+    IEnumerator EnableTargetPlacement()
+    {
+        yield return new WaitForSeconds(0.5f);
+        playerManager.placingTimeBomb = false;
+
+    }
 }
