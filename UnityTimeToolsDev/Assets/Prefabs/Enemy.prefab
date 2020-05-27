@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6816139004701449507}
   - component: {fileID: 995248914}
   - component: {fileID: 6902347611749117986}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35,7 +35,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &6816139004701449508
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -2371,7 +2371,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
 --- !u!114 &995248914
@@ -2391,7 +2391,7 @@ MonoBehaviour:
   startTime: 0
   target: {fileID: 0}
   waypoints: []
-  turnDistance: 1
+  turnDistance: 2
 --- !u!54 &6902347611749117986
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2404,7 +2404,7 @@ Rigidbody:
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  m_Constraints: 126
+  m_CollisionDetection: 3

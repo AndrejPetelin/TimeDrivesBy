@@ -156,6 +156,7 @@ public class NavigationController : MonoBehaviour
             if (t > effect.t2)
             {
                 tMod += (effect.t2 - effect.t1) * effect.timeModifier;
+                Debug.Log("T2: " + effect.t2 + " T1: " + effect.t1 + " TMOD: " + tMod);
             }
             else if (t > effect.t1)
             {
@@ -275,7 +276,7 @@ public class NavigationController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-      //  Debug.Log("COLLISION BETWEEN: " + transform.gameObject.name + " AND: " + collision.gameObject.name);
+        Debug.Log("COLLISION BETWEEN: " + transform.gameObject.name + " AND: " + collision.gameObject.name);
         TimeWarper warper = collision.gameObject.GetComponent<TimeWarper>();
         if (warper != null)
         {
@@ -292,6 +293,7 @@ public class NavigationController : MonoBehaviour
 
     private void OnCollisionExit(Collision collision)
     {
+        Debug.Log("COLLISION EXIT BETWEEN: " + transform.gameObject.name + " AND: " + collision.gameObject.name);
         TimeWarper warper = collision.gameObject.GetComponent<TimeWarper>();
         if (warper != null)
         {
