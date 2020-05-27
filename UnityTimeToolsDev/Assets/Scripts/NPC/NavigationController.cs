@@ -28,7 +28,9 @@ public class NavigationController : MonoBehaviour
     protected float fullDistance { get => waypoints[waypoints.Count - 1].distFromStart; }
 
     public float turnDistance = 1f;
-    
+
+
+    public List<TimeEffect> timeModifiers = new List<TimeEffect>();
 
     // Start is called before the first frame update
     void Start()
@@ -47,8 +49,11 @@ public class NavigationController : MonoBehaviour
             CalculateWaypoints(path);
         }
 
-
-
+        TimeEffect te = new TimeEffect();
+        te.t1 = 5;
+        te.t2 = 7;
+        te.timeModifier = 12f;
+        timeModifiers.Add(te);
     }
 
 
@@ -143,9 +148,27 @@ public class NavigationController : MonoBehaviour
 
     public void MoveTo(float t)
     {
+        float tMod = 0;
+        foreach (var effect in timeModifiers)
+        {
+            if (t > effect.t2)
+            {
+                tMod += (effect.t2 - effect.t1) * effect.timeModifier;
+            }
+            else if (t > effect.t1)
+            {
+                tMod += (t - effect.t1) * effect.timeModifier;
+            }
+        }
+
+        /*
         transform.position = PositionAtTime(t);
         transform.rotation = RotationAtTime(t);
-       // Debug.Log("WHO? : " + transform.gameObject.name + "ROT: " + transform.rotation.eulerAngles + " AT TIME: " + t);
+        */
+        transform.position = PositionAtTime(t + tMod);
+        transform.rotation = RotationAtTime(t + tMod);
+
+        // Debug.Log("WHO? : " + transform.gameObject.name + "ROT: " + transform.rotation.eulerAngles + " AT TIME: " + t);
     }
 
 
@@ -287,6 +310,21 @@ public class NavigationController : MonoBehaviour
         public Vector3 point;
         public Quaternion rotation;
         public float distFromStart;
+    }
+
+
+    public class TimeEffect
+    {
+        static int nextID;
+
+        public TimeEffect()
+        {
+            timeEffectID = nextID++;
+        }
+
+        public float t1, t2;
+        public float timeModifier;
+        public int timeEffectID;
     }
     
 }
