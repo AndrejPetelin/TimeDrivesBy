@@ -32,6 +32,7 @@ public class NavigationController : MonoBehaviour
 
     public List<TimeEffect> timeModifiers = new List<TimeEffect>();
 
+    float currentGameTime; 
     // Start is called before the first frame update
     void Start()
     {
@@ -49,11 +50,11 @@ public class NavigationController : MonoBehaviour
             CalculateWaypoints(path);
         }
 
-        TimeEffect te = new TimeEffect();
-        te.t1 = 5;
-        te.t2 = 7;
-        te.timeModifier = 12f;
-        timeModifiers.Add(te);
+      /*  TimeEffect te = new TimeEffect();
+        te.t1 = 2;
+        te.t2 = 5f;
+        te.timeModifier = -.9f;
+        timeModifiers.Add(te);*/
     }
 
 
@@ -148,6 +149,7 @@ public class NavigationController : MonoBehaviour
 
     public void MoveTo(float t)
     {
+        currentGameTime = t;
         float tMod = 0;
         foreach (var effect in timeModifiers)
         {
@@ -277,7 +279,13 @@ public class NavigationController : MonoBehaviour
         TimeWarper warper = collision.gameObject.GetComponent<TimeWarper>();
         if (warper != null)
         {
-            speed *= warper.speedFactor;
+            TimeEffect ef = new TimeEffect();
+            ef.t1 = currentGameTime;
+            ef.t2 = Mathf.Infinity;
+            ef.timeModifier = warper.speedFactor;
+            ef.timeEffectID = warper.gameObject.GetInstanceID();
+            timeModifiers.Add(ef);
+          //  speed *= warper.speedFactor;
         
         }
     }
@@ -287,8 +295,13 @@ public class NavigationController : MonoBehaviour
         TimeWarper warper = collision.gameObject.GetComponent<TimeWarper>();
         if (warper != null)
         {
-            speed *= baseSpeed;
-
+            foreach(var ef in timeModifiers)
+            {
+                if (ef.timeEffectID == warper.gameObject.GetInstanceID())
+                {
+                    ef.t2 = currentGameTime;
+                }
+            }
         }
     }
 
@@ -315,12 +328,12 @@ public class NavigationController : MonoBehaviour
 
     public class TimeEffect
     {
-        static int nextID;
+       /* static int nextID;
 
         public TimeEffect()
         {
             timeEffectID = nextID++;
-        }
+        }*/
 
         public float t1, t2;
         public float timeModifier;
