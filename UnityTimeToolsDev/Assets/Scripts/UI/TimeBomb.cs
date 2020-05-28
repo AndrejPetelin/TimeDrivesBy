@@ -43,6 +43,7 @@ public class TimeBomb : MonoBehaviour
 
     public void DisableTargetPlacement()
     {
+        Debug.Log("DISABLE");
         playerManager.placingTimeBomb = true;
     }
 
@@ -76,19 +77,27 @@ public class TimeBomb : MonoBehaviour
 			isCarrying = false; 
             // we enable the gem's collider here so that it doesn't collide agains the ray 
             timeBomb.GetComponent<Collider>().enabled = true;
-            StartCoroutine(EnableTargetPlacement());
+            StartCoroutine(EnableTargetPlace());
           //  playerManager.placingTimeBomb = false;
 		}
 		else if (Input.GetMouseButtonDown(1))
 		{
 			Destroy(timeBomb);
+            StartCoroutine(EnableTargetPlace());
 		}
 	}
 
-    IEnumerator EnableTargetPlacement()
+    IEnumerator EnableTargetPlace()
     {
+        Debug.Log("IN COROUTINE: " + playerManager.placingTimeBomb);
         yield return new WaitForSeconds(1f);
         playerManager.placingTimeBomb = false;
 
+    }
+
+    public void EnableTargetPlacement()
+    {
+        Debug.Log("ENABLE");
+        if (!isCarrying) playerManager.placingTimeBomb = false;
     }
 }
