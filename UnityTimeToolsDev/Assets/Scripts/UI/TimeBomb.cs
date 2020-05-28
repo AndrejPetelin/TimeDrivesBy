@@ -84,6 +84,7 @@ public class TimeBomb : MonoBehaviour
 		}
 		else if (Input.GetMouseButtonDown(1))
 		{
+			isCarrying = false;
 			Destroy(timeBomb);
             StartCoroutine(EnableTargetPlace());
 		}
@@ -91,10 +92,10 @@ public class TimeBomb : MonoBehaviour
 
     IEnumerator EnableTargetPlace()
     {
-        Debug.Log("IN COROUTINE: " + playerManager.placingTimeBomb);
-        yield return new WaitForSeconds(1f);
+		playerManager.placingTimeBomb = true;
+		Debug.Log("IN COROUTINE: " + playerManager.placingTimeBomb);
+        yield return new WaitForSeconds(5f);
         playerManager.placingTimeBomb = false;
-
     }
 
     public void EnableTargetPlacement()
