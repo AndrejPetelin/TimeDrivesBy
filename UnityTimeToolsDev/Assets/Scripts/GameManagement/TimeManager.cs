@@ -22,6 +22,9 @@ public class TimeManager : MonoBehaviour
              "in FixedUpdate(). Make sure that the fixed timestep is small enough to accomodate correct " +
              "collision detection, we don't want cars passing through each other!)")]
     float timeRate = 1;
+    float sign;
+    
+    public PostProcessHandler postProcHandler; 
 
     
     // Start is called before the first frame update
@@ -42,9 +45,23 @@ public class TimeManager : MonoBehaviour
         else
         {
             // figure out whether we have to add or subtract the timestep to _gameTime
-            float sign = Mathf.Sign(_targetTime - _gameTime);
+            sign = Mathf.Sign(_targetTime - _gameTime);
             _gameTime += sign * timeRate * Time.fixedDeltaTime;
+            
         }
+        if (postProcHandler.flipping) return;
+        
+        if (gameTime > _targetTime )
+        {
+            postProcHandler.FlipToBackwards();
+           // postProcHandler.flipping = true;
+        }
+        else
+        {
+            postProcHandler.FlipToRegular();
+           // postProcHandler.flipping = true;
+        }
+        
     }
 
 

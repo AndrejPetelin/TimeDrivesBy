@@ -78,6 +78,7 @@ public class TimeBomb : MonoBehaviour
 			isCarrying = false; 
             // we enable the gem's collider here so that it doesn't collide agains the ray 
             timeBomb.GetComponent<Collider>().enabled = true;
+            playerManager.placingTimeBomb = true;
             Debug.Log("MOUSE CLICK, PTB: " + playerManager.placingTimeBomb);
             StartCoroutine(EnableTargetPlace());
           //  playerManager.placingTimeBomb = false;
@@ -92,7 +93,7 @@ public class TimeBomb : MonoBehaviour
 
     IEnumerator EnableTargetPlace()
     {
-		playerManager.placingTimeBomb = true;
+		
 		Debug.Log("IN COROUTINE: " + playerManager.placingTimeBomb);
         yield return new WaitForSeconds(1f);
         playerManager.placingTimeBomb = false;

@@ -154,13 +154,13 @@ public class NavigationController : MonoBehaviour
 
     public void MoveTo(float t)
     {
-        Debug.Log("NAME: " + transform.gameObject.name);
+       // Debug.Log("NAME: " + transform.gameObject.name);
         currentGameTime = t;
         float tMod = 0;
         //  float modifierMult = 1;
 
         
-        Debug.Log("TIME MODIFIERS LENGTH: " + timeModifiers.Count);
+      //  Debug.Log("TIME MODIFIERS LENGTH: " + timeModifiers.Count);
         foreach (var effect in timeModifiers)
         {
             if (t > effect.t2)
@@ -196,7 +196,7 @@ public class NavigationController : MonoBehaviour
 
         /*   float ret = forward ? Mathf.Max(prevTModT + minSpeed, t + tMod )  : Mathf.Min(prevTModT - minSpeed, t + tMod ) ;
            if (Mathf.Approximately(t - prevT, 0)) ret = t + tMod;*/
-        Debug.Log("OBJECT:  " + transform.gameObject.name +  "T+TMOD: " + (t + tMod));
+      //  Debug.Log("OBJECT:  " + transform.gameObject.name +  "T+TMOD: " + (t + tMod));
          transform.position = PositionAtTime(t + tMod);
          transform.rotation = RotationAtTime(t + tMod);
      /*       transform.position = PositionAtTime(ret);
@@ -344,7 +344,7 @@ public class NavigationController : MonoBehaviour
         ef.timeModifier = warper.speedFactor;
         ef.timeEffectID = warper.gameObject.GetInstanceID();
         timeModifiers.Add(ef);
-        Debug.Log("CREATED: " + ( ef.timeModifier > 0 ? " FAST " : " SLOW " ) + ef.timeEffectID);
+        
     }
 
     private void OnCollisionExit(Collision collision)
