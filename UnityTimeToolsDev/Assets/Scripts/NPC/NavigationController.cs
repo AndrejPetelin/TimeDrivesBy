@@ -159,22 +159,19 @@ public class NavigationController : MonoBehaviour
         float tMod = 0;
         //  float modifierMult = 1;
 
-        /*  foreach (var effect in timeModifiers)
-          {
-              if (t > effect.t1 && !(t > effect.t2)) modifierMult *= Mathf.Abs(effect.timeModifier;
-          }*/
+        
         Debug.Log("TIME MODIFIERS LENGTH: " + timeModifiers.Count);
         foreach (var effect in timeModifiers)
         {
             if (t > effect.t2)
             {
                 tMod += (effect.t2 - effect.t1) * effect.timeModifier;
-                Debug.Log("T2: " + effect.t2 + " T1: " + effect.t1 + " TMOD: " + tMod );
+                Debug.Log("ID: " + effect.timeEffectID + " T2: " + effect.t2 + " T1: " + effect.t1 + " TMOD: " + tMod );
             }
             else if (t > effect.t1)
             {
                 tMod += (t - effect.t1)   * effect.timeModifier ;
-                 Debug.Log(" T1: " + effect.t1 + " TMOD: " + tMod);
+                 Debug.Log("ID: " + effect.timeEffectID + " T1: " + effect.t1 + " TMOD: " + tMod);
               //  modifierMult *= Mathf.Abs(effect.timeModifier);
             }
 
@@ -347,6 +344,7 @@ public class NavigationController : MonoBehaviour
         ef.timeModifier = warper.speedFactor;
         ef.timeEffectID = warper.gameObject.GetInstanceID();
         timeModifiers.Add(ef);
+        Debug.Log("CREATED: " + ( ef.timeModifier > 0 ? " FAST " : " SLOW " ) + ef.timeEffectID);
     }
 
     private void OnCollisionExit(Collision collision)
@@ -372,6 +370,7 @@ public class NavigationController : MonoBehaviour
                         if ( Mathf.Sign(timeModifiers[i].timeModifier) == Mathf.Sign(warper.speedFactor))
                         {
                             timeModifiers[i].t2 = currentGameTime;
+                            break;
                         }
                     }
                 }
@@ -386,6 +385,7 @@ public class NavigationController : MonoBehaviour
                         if (Mathf.Sign(timeModifiers[i].timeModifier) == Mathf.Sign(warper.speedFactor))
                         {
                             timeModifiers[i].t2 = currentGameTime;
+                            break;
                         }
                     }
                 }
