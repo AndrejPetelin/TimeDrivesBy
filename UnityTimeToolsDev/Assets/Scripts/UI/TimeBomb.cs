@@ -87,7 +87,7 @@ public class TimeBomb : MonoBehaviour
 
     IEnumerator EnableTargetPlacement()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
         playerManager.placingTimeBomb = false;
 
     }

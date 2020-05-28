@@ -145,32 +145,63 @@ public class NavigationController : MonoBehaviour
         // Probably the issue i had before was because of the if statement with the wrong > anyway. Too brain fried now!!
         return 0;
     }
-
+    float prevT;
+    float prevTModT;
+    public float minSpeed = 0.001f;
 
     public void MoveTo(float t)
     {
+      //  Debug.Log("NAME: " + transform.gameObject.name);
         currentGameTime = t;
         float tMod = 0;
+      //  float modifierMult = 1;
+        
+      /*  foreach (var effect in timeModifiers)
+        {
+            if (t > effect.t1 && !(t > effect.t2)) modifierMult *= Mathf.Abs(effect.timeModifier;
+        }*/
         foreach (var effect in timeModifiers)
         {
             if (t > effect.t2)
             {
                 tMod += (effect.t2 - effect.t1) * effect.timeModifier;
-                Debug.Log("T2: " + effect.t2 + " T1: " + effect.t1 + " TMOD: " + tMod);
+              //  Debug.Log("T2: " + effect.t2 + " T1: " + effect.t1 + " TMOD: " + tMod );
             }
             else if (t > effect.t1)
             {
-                tMod += (t - effect.t1) * effect.timeModifier;
+                tMod += (t - effect.t1)   * effect.timeModifier ;
+               //  Debug.Log(" T1: " + effect.t1 + " TMOD: " + tMod);
+              //  modifierMult *= Mathf.Abs(effect.timeModifier);
             }
-        }
 
+        }
+       
         /*
         transform.position = PositionAtTime(t);
         transform.rotation = RotationAtTime(t);
         */
-        transform.position = PositionAtTime(t + tMod);
-        transform.rotation = RotationAtTime(t + tMod);
+       // Debug.Log(" T: " + t + " PREVT " + prevT);
 
+       // Debug.Log("PREV: " + prevTModT + " CURR: " + (t + tMod));
+        /* t + tMod should give a value that's equal or larger to the one in the previous frame when moving forward
+         * equal or smaller to the previous frame when moving backwards. When we stack up two or more bubbles, the values are reversed
+         * and the enemies jump backwards. The idea is to, for starters, pass a value that will be equal to the previous one
+         * if necessary, to avoid flipping backwards. 
+         * prevT : the time at the previous frame
+         * prevTModT: the previous t + tMod
+         */
+        bool forward = t > prevT;
+        
+
+     /*   float ret = forward ? Mathf.Max(prevTModT + minSpeed, t + tMod )  : Mathf.Min(prevTModT - minSpeed, t + tMod ) ;
+        if (Mathf.Approximately(t - prevT, 0)) ret = t + tMod;*/
+         transform.position = PositionAtTime(t + tMod);
+         transform.rotation = RotationAtTime(t + tMod);
+     /*       transform.position = PositionAtTime(ret);
+        transform.rotation = RotationAtTime(ret);
+        Debug.Log("RET: " + ret);
+        prevTModT = ret;
+        prevT = t;*/
         // Debug.Log("WHO? : " + transform.gameObject.name + "ROT: " + transform.rotation.eulerAngles + " AT TIME: " + t);
     }
 
@@ -215,7 +246,7 @@ public class NavigationController : MonoBehaviour
     protected void CalculateWaypoints(NavMeshPath path, int wptsOffset = 0)
     {
         float currDist = 0;
-        Debug.Log("AT CALC: " + waypoints.Count);
+      //  Debug.Log("AT CALC: " + waypoints.Count);
         Waypoint wpt = new Waypoint();
         wpt.point = path.corners[0];
         wpt.distFromStart = currDist;
@@ -250,7 +281,7 @@ public class NavigationController : MonoBehaviour
             Waypoint pt = new Waypoint();
             pt.point = path.corners[0];
             pt.point = path.corners[i];
-            Debug.Log("POINT: " + pt.point);
+          //  Debug.Log("POINT: " + pt.point);
             pt.distFromStart = currDist;
 
             waypoints.Add(pt);
@@ -276,7 +307,7 @@ public class NavigationController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("COLLISION BETWEEN: " + transform.gameObject.name + " AND: " + collision.gameObject.name);
+       // Debug.Log("COLLISION BETWEEN: " + transform.gameObject.name + " AND: " + collision.gameObject.name);
         TimeWarper warper = collision.gameObject.GetComponent<TimeWarper>();
         if (warper != null)
         {
@@ -293,7 +324,7 @@ public class NavigationController : MonoBehaviour
 
     private void OnCollisionExit(Collision collision)
     {
-        Debug.Log("COLLISION EXIT BETWEEN: " + transform.gameObject.name + " AND: " + collision.gameObject.name);
+       // Debug.Log("COLLISION EXIT BETWEEN: " + transform.gameObject.name + " AND: " + collision.gameObject.name);
         TimeWarper warper = collision.gameObject.GetComponent<TimeWarper>();
         if (warper != null)
         {

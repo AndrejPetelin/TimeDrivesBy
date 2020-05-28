@@ -32,17 +32,22 @@ public class PlayerManager : MonoBehaviour
     void Update()
     {
         // handling input here
-        if (Input.GetMouseButtonDown(0) && ! placingTimeBomb)
+        if (Input.GetMouseButtonDown(0) )
         {
-            Vector3 worldPos;
-
-            if (MouseToWorld(out worldPos))
+            Debug.Log("PTB: " + placingTimeBomb);
+            if (! placingTimeBomb)
             {
-                target.position = worldPos;
-                player.AddWaypointAtCurrentPos(timeManager.gameTime);
-                player.ExtendPath();
-                Debug.Log("HERE");
+                Vector3 worldPos;
+
+                if (MouseToWorld(out worldPos))
+                {
+                    target.position = worldPos;
+                    player.AddWaypointAtCurrentPos(timeManager.gameTime);
+                    player.ExtendPath();
+                    Debug.Log("HERE");
+                }
             }
+        
         }
 
 
