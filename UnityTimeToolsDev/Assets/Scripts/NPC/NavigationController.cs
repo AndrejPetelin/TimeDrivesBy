@@ -32,7 +32,10 @@ public class NavigationController : MonoBehaviour
 
     public List<TimeEffect> timeModifiers = new List<TimeEffect>();
 
-    float currentGameTime; 
+    float currentGameTime;
+
+    int slowBombCounter;
+    int fastBombCounter;
     // Start is called before the first frame update
     void Start()
     {
@@ -151,26 +154,27 @@ public class NavigationController : MonoBehaviour
 
     public void MoveTo(float t)
     {
-      //  Debug.Log("NAME: " + transform.gameObject.name);
+        Debug.Log("NAME: " + transform.gameObject.name);
         currentGameTime = t;
         float tMod = 0;
-      //  float modifierMult = 1;
-        
-      /*  foreach (var effect in timeModifiers)
-        {
-            if (t > effect.t1 && !(t > effect.t2)) modifierMult *= Mathf.Abs(effect.timeModifier;
-        }*/
+        //  float modifierMult = 1;
+
+        /*  foreach (var effect in timeModifiers)
+          {
+              if (t > effect.t1 && !(t > effect.t2)) modifierMult *= Mathf.Abs(effect.timeModifier;
+          }*/
+        Debug.Log("TIME MODIFIERS LENGTH: " + timeModifiers.Count);
         foreach (var effect in timeModifiers)
         {
             if (t > effect.t2)
             {
                 tMod += (effect.t2 - effect.t1) * effect.timeModifier;
-              //  Debug.Log("T2: " + effect.t2 + " T1: " + effect.t1 + " TMOD: " + tMod );
+                Debug.Log("T2: " + effect.t2 + " T1: " + effect.t1 + " TMOD: " + tMod );
             }
             else if (t > effect.t1)
             {
                 tMod += (t - effect.t1)   * effect.timeModifier ;
-               //  Debug.Log(" T1: " + effect.t1 + " TMOD: " + tMod);
+                 Debug.Log(" T1: " + effect.t1 + " TMOD: " + tMod);
               //  modifierMult *= Mathf.Abs(effect.timeModifier);
             }
 
@@ -191,10 +195,11 @@ public class NavigationController : MonoBehaviour
          * prevTModT: the previous t + tMod
          */
         bool forward = t > prevT;
-        
 
-     /*   float ret = forward ? Mathf.Max(prevTModT + minSpeed, t + tMod )  : Mathf.Min(prevTModT - minSpeed, t + tMod ) ;
-        if (Mathf.Approximately(t - prevT, 0)) ret = t + tMod;*/
+
+        /*   float ret = forward ? Mathf.Max(prevTModT + minSpeed, t + tMod )  : Mathf.Min(prevTModT - minSpeed, t + tMod ) ;
+           if (Mathf.Approximately(t - prevT, 0)) ret = t + tMod;*/
+        Debug.Log("OBJECT:  " + transform.gameObject.name +  "T+TMOD: " + (t + tMod));
          transform.position = PositionAtTime(t + tMod);
          transform.rotation = RotationAtTime(t + tMod);
      /*       transform.position = PositionAtTime(ret);
@@ -311,15 +316,37 @@ public class NavigationController : MonoBehaviour
         TimeWarper warper = collision.gameObject.GetComponent<TimeWarper>();
         if (warper != null)
         {
-            TimeEffect ef = new TimeEffect();
-            ef.t1 = currentGameTime;
-            ef.t2 = Mathf.Infinity;
-            ef.timeModifier = warper.speedFactor;
-            ef.timeEffectID = warper.gameObject.GetInstanceID();
-            timeModifiers.Add(ef);
+           
+            if (warper.speedFactor > 0)
+            {
+                if (fastBombCounter == 0)
+                {
+                    CreateNewTimeModifier(warper);
+                }
+                ++fastBombCounter;
+            }
+            else if (warper.speedFactor < 0)
+            {
+                if (slowBombCounter == 0)
+                {
+                    CreateNewTimeModifier(warper);
+                }
+                ++slowBombCounter;
+            }
+            
           //  speed *= warper.speedFactor;
         
         }
+    }
+
+    void CreateNewTimeModifier(TimeWarper warper)
+    {
+        TimeEffect ef = new TimeEffect();
+        ef.t1 = currentGameTime;
+        ef.t2 = Mathf.Infinity;
+        ef.timeModifier = warper.speedFactor;
+        ef.timeEffectID = warper.gameObject.GetInstanceID();
+        timeModifiers.Add(ef);
     }
 
     private void OnCollisionExit(Collision collision)
@@ -328,11 +355,39 @@ public class NavigationController : MonoBehaviour
         TimeWarper warper = collision.gameObject.GetComponent<TimeWarper>();
         if (warper != null)
         {
-            foreach(var ef in timeModifiers)
+           /* foreach(var ef in timeModifiers)
             {
                 if (ef.timeEffectID == warper.gameObject.GetInstanceID())
                 {
                     ef.t2 = currentGameTime;
+                }
+            }*/
+            if (warper.speedFactor > 0)
+            {
+                --fastBombCounter;
+                if (fastBombCounter == 0)
+                {
+                    for (int i = timeModifiers.Count - 1; i >=0; --i)
+                    {
+                        if ( Mathf.Sign(timeModifiers[i].timeModifier) == Mathf.Sign(warper.speedFactor))
+                        {
+                            timeModifiers[i].t2 = currentGameTime;
+                        }
+                    }
+                }
+            }
+            else if (warper.speedFactor < 0)
+            {
+                --slowBombCounter;
+                if (slowBombCounter == 0)
+                {
+                    for (int i = timeModifiers.Count - 1; i >= 0; --i)
+                    {
+                        if (Mathf.Sign(timeModifiers[i].timeModifier) == Mathf.Sign(warper.speedFactor))
+                        {
+                            timeModifiers[i].t2 = currentGameTime;
+                        }
+                    }
                 }
             }
         }
