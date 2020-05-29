@@ -41,7 +41,9 @@ public class PlayerManager : MonoBehaviour
 
                 if (MouseToWorld(out worldPos))
                 {
-                    target.position = worldPos;
+                    Vector3 newpos = new Vector3(worldPos.x, 0, worldPos.z);
+                    target.position = newpos;
+                   
                     player.AddWaypointAtCurrentPos(timeManager.gameTime);
                     player.ExtendPath();
                     Debug.Log("HERE");

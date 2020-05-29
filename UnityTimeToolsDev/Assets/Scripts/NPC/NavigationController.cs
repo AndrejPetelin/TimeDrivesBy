@@ -295,10 +295,11 @@ public class NavigationController : MonoBehaviour
             pointB.y = 0f;
            
             Quaternion rot = Quaternion.FromToRotation(transform.forward, (pointB - pointA).normalized);
-
+            Debug.Log("ROT: " + rot.eulerAngles);
             // waypoints[i - 1].rotation = rot;
             // since the waypoint[0] already has its rotation set up, we set the current one here. 
             waypoints[i].rotation = rot * transform.rotation;
+            Debug.Log("I : " + i + " ROTA: " + waypoints[i].rotation.eulerAngles);
 
 
         }

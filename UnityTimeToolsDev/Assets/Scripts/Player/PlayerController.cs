@@ -37,7 +37,8 @@ public class PlayerController : NavigationController
 
         // create new waypoint at our current location
         float currentDist = waypoints[waypoints.Count - 1].distFromStart + (transform.position - waypoints[waypoints.Count - 1].point).magnitude;
-        Waypoint newPoint = new Waypoint(transform.position, waypoints[waypoints.Count - 1].rotation, currentDist);
+        //  Waypoint newPoint = new Waypoint(transform.position, waypoints[waypoints.Count - 1].rotation, currentDist);
+        Waypoint newPoint = new Waypoint(transform.position, transform.rotation, currentDist);
 
         // commenting this out fixes the issue of weird points at time 0 in the middle of the thing (causes some teleporting)
       //  waypoints.Add(newPoint);
