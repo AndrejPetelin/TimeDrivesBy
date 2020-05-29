@@ -248,7 +248,7 @@ public class NavigationController : MonoBehaviour
     protected void CalculateWaypoints(NavMeshPath path, int wptsOffset = 0)
     {
         float currDist = 0;
-      //  Debug.Log("AT CALC: " + waypoints.Count);
+        
         Waypoint wpt = new Waypoint();
         wpt.point = path.corners[0];
         wpt.distFromStart = currDist;
@@ -271,10 +271,10 @@ public class NavigationController : MonoBehaviour
             waypoints = new List<Waypoint>(path.corners.Length);
             waypoints.Add(wpt);
         }
-        
-        
-        
 
+
+
+       
         for (int i = 1; i < path.corners.Length; ++i)
         {
             // total distance so far
@@ -289,25 +289,31 @@ public class NavigationController : MonoBehaviour
             waypoints.Add(pt);
 
             // TODO - check if this works correctly. Do we even need it? Could we just determine rotation on the fly
-            Vector3 pointA = waypoints[i - 1].point;
-            Vector3 pointB = waypoints[i].point;
+            int index = wptsOffset > 0 ?    i + wptsOffset-1 : i;
+            Vector3 pointA = waypoints[index - 1].point;
+            Vector3 pointB = waypoints[index].point;
             pointA.y = 0f;
             pointB.y = 0f;
            
             Quaternion rot = Quaternion.FromToRotation(transform.forward, (pointB - pointA).normalized);
-            Debug.Log("ROT: " + rot.eulerAngles);
+            
             // waypoints[i - 1].rotation = rot;
             // since the waypoint[0] already has its rotation set up, we set the current one here. 
-            waypoints[i].rotation = rot * transform.rotation;
-            Debug.Log("I : " + i + " ROTA: " + waypoints[i].rotation.eulerAngles);
+            waypoints[index].rotation = rot * transform.rotation;
+           
 
 
         }
+       // Debug.Log("LENGTH: " + waypoints.Count);
 
       //  waypoints[waypoints.Count - 1].rotation = waypoints[waypoints.Count - 2].rotation;
        // Debug.Log("AT CALC END: " + waypoints.Count);
     }
 
+    /* when we enter collision with a timebomb we check the type (slow / fast). The idea is to prevent accumulation of the effects
+     * So we use the counter. When we enter, if it's not 0 we don't create a new modifier and we always increase the counter
+     * to keep track of how many bombs we've entered
+     */
     private void OnCollisionEnter(Collision collision)
     {
        // Debug.Log("COLLISION BETWEEN: " + transform.gameObject.name + " AND: " + collision.gameObject.name);
@@ -348,6 +354,10 @@ public class NavigationController : MonoBehaviour
         
     }
 
+    /* when we exit collision, we also check the type of the bomb. If the count isn't 0, that means we're 
+     * within a "nested" bomb, so we lower the counter and continue. When we hit 0, we look for the last bomb in the list of the same type
+     * This one must be the one we had entered when the sequence of bombs began, so we set t2 and exit the loop
+     */
     private void OnCollisionExit(Collision collision)
     {
        // Debug.Log("COLLISION EXIT BETWEEN: " + transform.gameObject.name + " AND: " + collision.gameObject.name);
