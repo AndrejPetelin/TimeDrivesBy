@@ -15,6 +15,10 @@ public class TimeManager : MonoBehaviour
         get { return _gameTime; }
         set { _targetTime = value; }
     }
+    public StaminaBar staminaBar;
+    public float coolDown;
+    bool backwards;
+    bool forward = true;
 
 
     [SerializeField,
@@ -49,17 +53,32 @@ public class TimeManager : MonoBehaviour
             _gameTime += sign * timeRate * Time.fixedDeltaTime;
             
         }
+
         if (postProcHandler.flipping) return;
         
-        if (gameTime > _targetTime )
+        if (gameTime > _targetTime + coolDown )
         {
-            postProcHandler.FlipToBackwards();
-           // postProcHandler.flipping = true;
+            if (! backwards)
+            {
+                postProcHandler.FlipToBackwards();
+                // postProcHandler.flipping = true;
+                staminaBar.SetSliderValue(true);
+                backwards = true;
+                forward = false;
+            }
+           
         }
         else
         {
-            postProcHandler.FlipToRegular();
-           // postProcHandler.flipping = true;
+            if (! forward)
+            {
+                postProcHandler.FlipToRegular();
+                staminaBar.SetSliderValue(false);
+                // postProcHandler.flipping = true;
+                backwards = false;
+                forward = true;
+            }
+
         }
         
     }
