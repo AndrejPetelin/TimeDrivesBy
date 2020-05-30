@@ -6,19 +6,19 @@ using UnityEngine.UI;
 public class ClockHandler : MonoBehaviour
 {
 
-    public GameObject targetHandPrefab;
+   // public GameObject targetHandPrefab;
 
-    GameObject targetHand;
+    public GameObject targetHand;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        targetHand = Instantiate(targetHandPrefab);
+       /* targetHand = Instantiate(targetHandPrefab);
         targetHand.transform.position = transform.position;
         targetHand.transform.rotation = transform.rotation;
         
-        targetHand.transform.SetParent(transform.parent);
+        targetHand.transform.SetParent(transform.parent);*/
         targetHand.SetActive(false);
     }
 
@@ -31,9 +31,13 @@ public class ClockHandler : MonoBehaviour
     public void ShowTargetHand()
     {
         targetHand.SetActive(true);
+      //  Debug.Log("OVER CLOCK");
     }
 
-
+    public void Test()
+    {
+        Debug.Log("OVER CLOCK");
+    }
     void HideTargetHand()
     {
         targetHand.SetActive(false);

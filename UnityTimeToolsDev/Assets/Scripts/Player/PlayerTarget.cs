@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class PlayerTarget : MonoBehaviour
 {
+    public float offset;
+    float currentY;
+    float nextY;
+    float from;
+    float dest;
+    float timer;
+    public float effectTime; 
     public Vector3 position
     {
         get { return transform.position; }
@@ -13,5 +20,34 @@ public class PlayerTarget : MonoBehaviour
     public float Distance(Vector3 point)
     {
         return Vector3.Distance(transform.position, point);
+    }
+
+    private void Start()
+    {
+        //currentY = transform.position.y;
+        
+        nextY = transform.position.y + offset;
+    }
+
+    private void Update()
+    {
+        
+        if (Mathf.Approximately(currentY, transform.position.y))
+        {
+           
+            from = currentY;
+            dest = nextY;
+            timer = 0;
+        }
+        else if (Mathf.Approximately(nextY, transform.position.y))
+        {
+            from = nextY;
+            dest = currentY;
+            timer = 0;
+        }
+        timer += Time.deltaTime ;
+
+        float newY = Mathf.Lerp(from, dest, timer * effectTime);
+        transform.position = new Vector3(transform.position.x, newY, transform.position.z);
     }
 }

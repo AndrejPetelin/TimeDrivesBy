@@ -23,5 +23,6 @@ Material:
     m_Floats:
     - Vector1_4E564F1C: 1.78
     - Vector1_D440F0E2: 0.48
+    - _TransparencyMult: 1
     m_Colors:
     - Color_51790DBC: {r: 0, g: 2.79544, b: 0.45371017, a: 0}
