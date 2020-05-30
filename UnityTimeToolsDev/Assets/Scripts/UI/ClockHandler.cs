@@ -10,7 +10,15 @@ public class ClockHandler : MonoBehaviour
    // public GameObject targetHandPrefab;
 
     public GameObject targetHand;
+    public GameObject displayObject;
 
+    public TimeManager timeManager;
+
+    [SerializeField] float _time;
+    public float time { get { return _time; } private set { } }
+
+    Vector2 pivot;
+    Camera cam;
 
     // Start is called before the first frame update
     void Start()
@@ -20,7 +28,11 @@ public class ClockHandler : MonoBehaviour
         targetHand.transform.rotation = transform.rotation;
         
         targetHand.transform.SetParent(transform.parent);*/
-        targetHand.SetActive(false);
+        displayObject.SetActive(false);
+
+        cam = Camera.main;
+
+        pivot = cam.WorldToScreenPoint(transform.position);
     }
 
     // Update is called once per frame
@@ -29,9 +41,9 @@ public class ClockHandler : MonoBehaviour
         
     }
 
-    public void ShowTargetHand()
+    public void ShowTargetHand(bool show)
     {
-        targetHand.SetActive(true);
+        displayObject.SetActive(show);
       //  Debug.Log("OVER CLOCK");
     }
 
@@ -40,15 +52,27 @@ public class ClockHandler : MonoBehaviour
         Debug.Log("OVER CLOCK");
         Debug.Log(data.currentInputModule.input.mousePosition );
     }
-    void HideTargetHand()
+
+
+
+    public void DragHand()
     {
-        targetHand.SetActive(false);
-    }
+        Vector2 direction = (Vector2)Input.mousePosition - pivot;
 
+        float angle = Mathf.Acos(direction.y / direction.magnitude) * Mathf.Rad2Deg;
 
-    void DragHand()
-    {
+        if (Mathf.Sign(direction.x) < 0)
+        {
+            angle = 360f - angle;
+        }
 
+        _time = angle / 6f;
+        targetHand.transform.localRotation = Quaternion.Euler(0, 0, angle);
     }
     
+
+    public void SetTargetTime()
+    {
+        timeManager.gameTime = time;
+    }
 }
