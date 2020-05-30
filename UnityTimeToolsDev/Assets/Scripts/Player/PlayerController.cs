@@ -8,6 +8,8 @@ using UnityEngine.AI;
 
 public class PlayerController : NavigationController
 {
+
+    public PostProcessHandler postProc;
     void Start()
     {
         Waypoint wp0 = new Waypoint(transform.position, transform.rotation, 0f);
@@ -65,5 +67,11 @@ public class PlayerController : NavigationController
     }
 
 
-
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Enemy")
+        {
+            postProc.FlipToDying();
+        }
+    }
 }
