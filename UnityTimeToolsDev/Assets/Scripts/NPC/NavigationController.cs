@@ -316,7 +316,7 @@ public class NavigationController : MonoBehaviour
      */
     private void OnCollisionEnter(Collision collision)
     {
-       // Debug.Log("COLLISION BETWEEN: " + transform.gameObject.name + " AND: " + collision.gameObject.name);
+        Debug.Log("COLLISION BETWEEN: " + transform.gameObject.name + " AND: " + collision.gameObject.name);
         TimeWarper warper = collision.gameObject.GetComponent<TimeWarper>();
         if (warper != null)
         {

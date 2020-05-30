@@ -69,8 +69,10 @@ public class PlayerController : NavigationController
 
     private void OnCollisionEnter(Collision collision)
     {
+      //  Debug.Log("CAR COLLIDES WITH: " + collision.gameObject.name + " TAG: " + collision.gameObject.tag);
         if (collision.gameObject.tag == "Enemy")
         {
+            //Debug.Log("COLL WITH ENEMY");
             postProc.FlipToDying();
         }
     }
