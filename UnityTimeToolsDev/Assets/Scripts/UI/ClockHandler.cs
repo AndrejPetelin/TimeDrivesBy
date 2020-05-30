@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class ClockHandler : MonoBehaviour
 {
@@ -34,9 +35,10 @@ public class ClockHandler : MonoBehaviour
       //  Debug.Log("OVER CLOCK");
     }
 
-    public void Test()
+    public void Test(BaseEventData data)
     {
         Debug.Log("OVER CLOCK");
+        Debug.Log(data.currentInputModule.input.mousePosition );
     }
     void HideTargetHand()
     {
