@@ -208,8 +208,8 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 1940615763148004730}
-          m_MethodName: ShowTargetHand
-          m_Mode: 6
+          m_MethodName: SetTargetTime
+          m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -523,6 +523,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetHand: {fileID: 5175503081725892327}
   displayObject: {fileID: 8846367968601730995}
+  timeManager: {fileID: 0}
+  _time: 0
 --- !u!1 &4891457776543229329
 GameObject:
   m_ObjectHideFlags: 0
