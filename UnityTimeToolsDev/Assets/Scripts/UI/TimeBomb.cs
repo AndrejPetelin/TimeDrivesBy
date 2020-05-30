@@ -13,12 +13,12 @@ public class TimeBomb : MonoBehaviour
 	int areaMask;
 	GameObject timeBomb;
     public PlayerManager playerManager;
-
+    public LayerMask clickableLayer;
 
 	// Start is called before the first frame update
 	void Start()
 	{
-        Debug.Log("TIME BOMB");
+        //Debug.Log("TIME BOMB");
 		mCamera = Camera.main;
 		areaMask = 1 << NavMesh.GetAreaFromName("Walkable");
 	}
@@ -64,7 +64,7 @@ public class TimeBomb : MonoBehaviour
         }*/
 
 		// Find nearest point on NaveMash Walkable area
-		if (Physics.Raycast(ray, out hit, Mathf.Infinity) && 
+		if (Physics.Raycast(ray, out hit, Mathf.Infinity, clickableLayer) && 
 		   (NavMesh.SamplePosition(hit.point, out NavMeshHit navMeshHit, 0.5f, areaMask)))
 		{
 			{

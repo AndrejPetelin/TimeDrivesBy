@@ -160,18 +160,18 @@ public class NavigationController : MonoBehaviour
         //  float modifierMult = 1;
 
         
-      //  Debug.Log("TIME MODIFIERS LENGTH: " + timeModifiers.Count);
+      //  Debug.Log("NAME: " + transform.gameObject.name + " TIME MODIFIERS LENGTH: " + timeModifiers.Count);
         foreach (var effect in timeModifiers)
         {
             if (t > effect.t2)
             {
                 tMod += (effect.t2 - effect.t1) * effect.timeModifier;
-                Debug.Log("ID: " + effect.timeEffectID + " T2: " + effect.t2 + " T1: " + effect.t1 + " TMOD: " + tMod );
+              //  Debug.Log("ID: " + effect.timeEffectID + " T2: " + effect.t2 + " T1: " + effect.t1 + " TMOD: " + tMod );
             }
             else if (t > effect.t1)
             {
                 tMod += (t - effect.t1)   * effect.timeModifier ;
-                 Debug.Log("ID: " + effect.timeEffectID + " T1: " + effect.t1 + " TMOD: " + tMod);
+               //  Debug.Log("ID: " + effect.timeEffectID + " T1: " + effect.t1 + " TMOD: " + tMod);
               //  modifierMult *= Mathf.Abs(effect.timeModifier);
             }
 
@@ -327,6 +327,10 @@ public class NavigationController : MonoBehaviour
                 {
                     CreateNewTimeModifier(warper);
                 }
+                else
+                {
+                    AddIDToModifiers(warper);
+                }
                 ++fastBombCounter;
             }
             else if (warper.speedFactor < 0)
@@ -334,6 +338,10 @@ public class NavigationController : MonoBehaviour
                 if (slowBombCounter == 0)
                 {
                     CreateNewTimeModifier(warper);
+                }
+                else
+                {
+                    AddIDToModifiers(warper);
                 }
                 ++slowBombCounter;
             }
@@ -349,9 +357,23 @@ public class NavigationController : MonoBehaviour
         ef.t1 = currentGameTime;
         ef.t2 = Mathf.Infinity;
         ef.timeModifier = warper.speedFactor;
-        ef.timeEffectID = warper.gameObject.GetInstanceID();
+        // ef.timeEffectID = warper.gameObject.GetInstanceID();
+        ef.timeEffectIDs = new List<int>();
+        ef.timeEffectIDs.Add(warper.gameObject.GetInstanceID());
         timeModifiers.Add(ef);
         
+    }
+
+    void AddIDToModifiers(TimeWarper warper)
+    {
+        for (int i = timeModifiers.Count - 1; i >= 0; --i)
+        {
+            if (Mathf.Sign(timeModifiers[i].timeModifier) == Mathf.Sign(warper.speedFactor))
+            {
+                timeModifiers[i].timeEffectIDs.Add(warper.gameObject.GetInstanceID());
+                break;
+            }
+        }
     }
 
     /* when we exit collision, we also check the type of the bomb. If the count isn't 0, that means we're 
@@ -364,13 +386,7 @@ public class NavigationController : MonoBehaviour
         TimeWarper warper = collision.gameObject.GetComponent<TimeWarper>();
         if (warper != null)
         {
-           /* foreach(var ef in timeModifiers)
-            {
-                if (ef.timeEffectID == warper.gameObject.GetInstanceID())
-                {
-                    ef.t2 = currentGameTime;
-                }
-            }*/
+           
             if (warper.speedFactor > 0)
             {
                 --fastBombCounter;
@@ -380,8 +396,14 @@ public class NavigationController : MonoBehaviour
                     {
                         if ( Mathf.Sign(timeModifiers[i].timeModifier) == Mathf.Sign(warper.speedFactor))
                         {
-                            timeModifiers[i].t2 = currentGameTime;
-                            break;
+                            //timeModifiers[i].t2 = currentGameTime;
+                            if (RemoveTimeModifier(timeModifiers[i]))
+                                break;
+                            else
+                            {
+                                timeModifiers[i].t2 = currentGameTime;
+                                break;
+                            }
                         }
                     }
                 }
@@ -395,8 +417,13 @@ public class NavigationController : MonoBehaviour
                     {
                         if (Mathf.Sign(timeModifiers[i].timeModifier) == Mathf.Sign(warper.speedFactor))
                         {
-                            timeModifiers[i].t2 = currentGameTime;
-                            break;
+                            if (RemoveTimeModifier(timeModifiers[i]))
+                                break;
+                            else
+                            {
+                                timeModifiers[i].t2 = currentGameTime;
+                                break;
+                            }
                         }
                     }
                 }
@@ -404,7 +431,23 @@ public class NavigationController : MonoBehaviour
         }
     }
 
-
+    bool RemoveTimeModifier(TimeEffect modifier)
+    {
+        foreach (var mod in timeModifiers)
+        {
+            if (mod == modifier) continue;
+            foreach(var id in mod.timeEffectIDs)
+            {
+                if (modifier.timeEffectIDs.Contains(id))
+                {
+                    timeModifiers.Remove(mod);
+                    timeModifiers.Remove(modifier);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     [Serializable]
     public class Waypoint
@@ -436,7 +479,7 @@ public class NavigationController : MonoBehaviour
 
         public float t1, t2;
         public float timeModifier;
-        public int timeEffectID;
+        public List< int> timeEffectIDs;
     }
     
 }
