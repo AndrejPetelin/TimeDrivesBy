@@ -8,4 +8,10 @@ EditorBuildSettings:
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
+  - enabled: 1
+    path: Assets/_Scenes/MainMenuScene.unity
+    guid: 39eebb033198d7f45b7ef41a9111b3fa
+  - enabled: 1
+    path: Assets/_Scenes/Levels/Level_40_16_Irene.unity
+    guid: 00e9ba809b9da4d4295e5072cca74de1
   m_configObjects: {}
