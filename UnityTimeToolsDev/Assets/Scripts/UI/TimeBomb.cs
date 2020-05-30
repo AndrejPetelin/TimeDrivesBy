@@ -14,6 +14,8 @@ public class TimeBomb : MonoBehaviour
 	GameObject timeBomb;
     public PlayerManager playerManager;
     public LayerMask clickableLayer;
+	public AudioSource timeBombPlacement;
+
 
 	// Start is called before the first frame update
 	void Start()
@@ -78,7 +80,8 @@ public class TimeBomb : MonoBehaviour
 			isCarrying = false; 
             // we enable the gem's collider here so that it doesn't collide agains the ray 
             timeBomb.GetComponent<Collider>().enabled = true;
-            playerManager.placingTimeBomb = true;
+			timeBombPlacement.Play();
+			playerManager.placingTimeBomb = true;
             Debug.Log("MOUSE CLICK, PTB: " + playerManager.placingTimeBomb);
             StartCoroutine(EnableTargetPlace());
           //  playerManager.placingTimeBomb = false;
