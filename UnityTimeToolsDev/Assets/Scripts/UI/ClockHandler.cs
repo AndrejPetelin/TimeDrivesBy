@@ -48,6 +48,7 @@ public class ClockHandler : MonoBehaviour
             hand.transform.localRotation = Quaternion.Euler(0, 0, timeManager.gameTime * 6);
            // timeManager.timeRate = 1;
         }
+        /*
         else if (timeManager.targetTimeReached && timeManager.gameTime >= playerController.fullPathTime)
         {
             targetHand.transform.localRotation = Quaternion.Euler(0, 0, playerController.fullPathTime * 6);
@@ -55,7 +56,10 @@ public class ClockHandler : MonoBehaviour
            // timeManager.timeRate = 1;
 
         }
+        */
        // else timeManager.timeRate = 2;
+
+
     }
 
     public void ShowTargetHand(bool show)
@@ -91,7 +95,9 @@ public class ClockHandler : MonoBehaviour
         previousAngle = angle;
     }
     
-
+    /**
+     * Someone calls this :) Called from UnityEvent in TimeCanvas
+     */
     public void SetTargetTime()
     {
         timeManager.gameTime = timeTarget;

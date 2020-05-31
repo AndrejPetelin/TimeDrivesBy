@@ -18,6 +18,7 @@ public class PlayerManager : MonoBehaviour
 
     public bool placingTimeBomb;
     public bool changingClock;
+    public bool clockSynching;
 
     // Start is called before the first frame update
     void Start()
@@ -32,12 +33,18 @@ public class PlayerManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (timeManager.targetTimeReached)
+        {
+            player.InsertWaypoint(timeManager.gameTime);
+        }
+
         // handling input here
         if (Input.GetMouseButtonDown(0) )
         {
             Debug.Log("PTB: " + placingTimeBomb);
-            if (! placingTimeBomb && ! changingClock)
+            if (!placingTimeBomb && !changingClock && timeManager.targetTimeReached)
             {
+                print("All bools check out");
                 Vector3 worldPos;
 
                 if (MouseToWorld(out worldPos))
