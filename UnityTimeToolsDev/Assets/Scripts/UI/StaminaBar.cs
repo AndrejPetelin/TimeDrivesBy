@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class StaminaBar : MonoBehaviour
 {
 
-    Slider slider;
+    public Slider slider;
     public Image image;
     public Gradient colorGradient;
     public bool allowRegeneration;

@@ -8,6 +8,7 @@ using UnityEngine.AI;
 
 public class PlayerController : NavigationController
 {
+    StaminaBar staminaBar;
 
     public PostProcessHandler postProc;
     void Start()
@@ -15,6 +16,7 @@ public class PlayerController : NavigationController
         Waypoint wp0 = new Waypoint(transform.position, transform.rotation, 0f);
         waypoints.Add(wp0);
 
+        staminaBar = FindObjectOfType<StaminaBar>();
      //   ExtendPath();
     }
 
@@ -94,6 +96,17 @@ public class PlayerController : NavigationController
         {
             //Debug.Log("COLL WITH ENEMY");
             postProc.FlipToDying();
+
+            
+
+            if (staminaBar.slider.value <= 0f)
+            {
+                // TODO
+            }
+            else
+            {
+                DeathAtTime(currentGameTime);
+            }
         }
     }
 }
