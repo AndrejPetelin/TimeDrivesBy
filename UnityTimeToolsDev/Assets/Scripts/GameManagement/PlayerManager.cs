@@ -17,6 +17,7 @@ public class PlayerManager : MonoBehaviour
     Camera cam;
 
     public bool placingTimeBomb;
+    public bool changingClock;
 
     // Start is called before the first frame update
     void Start()
@@ -35,7 +36,7 @@ public class PlayerManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0) )
         {
             Debug.Log("PTB: " + placingTimeBomb);
-            if (! placingTimeBomb)
+            if (! placingTimeBomb && ! changingClock)
             {
                 Vector3 worldPos;
 

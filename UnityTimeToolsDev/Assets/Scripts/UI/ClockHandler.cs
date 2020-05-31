@@ -12,6 +12,7 @@ public class ClockHandler : MonoBehaviour
     public GameObject targetHand;
     public GameObject targetHandDisplayObject;
     public GameObject hand;
+    public PlayerManager manager;
 
     public TimeManager timeManager;
 
@@ -78,5 +79,17 @@ public class ClockHandler : MonoBehaviour
     public void SetTargetTime()
     {
         timeManager.gameTime = timeTarget;
+    }
+
+    public void Overlapping()
+    {
+        Debug.Log("OVERLAPPING");
+        manager.changingClock = true;
+    }
+
+    public void NotOverlapping()
+    {
+        Debug.Log("NOT OVERLAPPING");
+        manager.changingClock = false;
     }
 }
