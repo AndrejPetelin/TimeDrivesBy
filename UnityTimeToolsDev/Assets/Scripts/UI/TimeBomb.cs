@@ -98,7 +98,7 @@ public class TimeBomb : MonoBehaviour
     {
 		
 		Debug.Log("IN COROUTINE: " + playerManager.placingTimeBomb);
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(2f);
         playerManager.placingTimeBomb = false;
     }
 

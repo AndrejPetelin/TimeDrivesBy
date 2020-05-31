@@ -43,7 +43,7 @@ public class PlayerController : NavigationController
         Waypoint newPoint = new Waypoint(transform.position, transform.rotation, currentDist);
 
         // commenting this out fixes the issue of weird points at time 0 in the middle of the thing (causes some teleporting)
-        waypoints.Add(newPoint);
+      //  waypoints.Add(newPoint);
         // InsertWaypoint(time);
         // recalculate rotation of the point before last (this is probably not needed, should be moving in the same direction anyway)
         // waypoints[waypoints.Count - 2].rotation = Quaternion.FromToRotation(Vector3.left, (waypoints[waypoints.Count - 1].point - waypoints[waypoints.Count - 2].point));
@@ -76,7 +76,11 @@ public class PlayerController : NavigationController
             ++i;
         }
 
-        if (i >= waypoints.Count || waypoints[i].point != transform.position)
+        if (i >= waypoints.Count && waypoints[i - 1].point != transform.position)
+        {
+            waypoints.Insert(i, new Waypoint(transform.position, transform.rotation, time * speed));
+        }
+        else if (i < waypoints.Count && waypoints[i].point != transform.position)
         {
             waypoints.Insert(i, new Waypoint(transform.position, transform.rotation, time * speed));
         }

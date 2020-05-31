@@ -48,15 +48,19 @@ public class ClockHandler : MonoBehaviour
             hand.transform.localRotation = Quaternion.Euler(0, 0, timeManager.gameTime * 6);
            // timeManager.timeRate = 1;
         }
-        /*
-        else if (timeManager.targetTimeReached && timeManager.gameTime >= playerController.fullPathTime)
+        
+        else if (timeManager.targetTimeReached && timeManager.gameTime > playerController.fullPathTime)
         {
+            Debug.Log("FPT: " + playerController.fullPathTime);
             targetHand.transform.localRotation = Quaternion.Euler(0, 0, playerController.fullPathTime * 6);
             timeManager.gameTime = playerController.fullPathTime;
            // timeManager.timeRate = 1;
 
         }
-        */
+        else if (timeManager.targetTimeReached)
+        {
+            hand.transform.localRotation = Quaternion.Euler(0, 0, timeManager.gameTime * 6);
+        }
        // else timeManager.timeRate = 2;
 
 
