@@ -23,6 +23,7 @@ public class ClockHandler : MonoBehaviour
 
     Vector2 pivot;
     Camera cam;
+    float previousAngle;
 
     // Start is called before the first frame update
     void Start()
@@ -45,13 +46,16 @@ public class ClockHandler : MonoBehaviour
         if (!timeManager.targetTimeReached)
         {
             hand.transform.localRotation = Quaternion.Euler(0, 0, timeManager.gameTime * 6);
+           // timeManager.timeRate = 1;
         }
         else if (timeManager.targetTimeReached && timeManager.gameTime >= playerController.fullPathTime)
         {
             targetHand.transform.localRotation = Quaternion.Euler(0, 0, playerController.fullPathTime * 6);
             timeManager.gameTime = playerController.fullPathTime;
+           // timeManager.timeRate = 1;
 
         }
+       // else timeManager.timeRate = 2;
     }
 
     public void ShowTargetHand(bool show)
@@ -78,9 +82,13 @@ public class ClockHandler : MonoBehaviour
         {
             angle = 360f - angle;
         }
-
+        Debug.Log("PREV: " + previousAngle + " CURR: " + angle);
+        if (previousAngle < 20 && angle > 320) return;
+        if (previousAngle > 340 && angle < 20) return;
         _timeTarget = angle / 6f;
+        Debug.Log("ANGLE: " + angle);
         targetHand.transform.localRotation = Quaternion.Euler(0, 0, angle);
+        previousAngle = angle;
     }
     
 

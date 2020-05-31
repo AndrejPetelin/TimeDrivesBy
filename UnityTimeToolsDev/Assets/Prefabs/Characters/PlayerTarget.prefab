@@ -108,3 +108,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   offset: 0.25
   effectTime: 1
+  playerTransform: {fileID: 0}
+  distanceOffset: 1.5

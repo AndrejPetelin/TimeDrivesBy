@@ -13,6 +13,7 @@ public class NavigationController : MonoBehaviour
     float baseSpeed = 1;
 
     public float rotTime = 0.5f;
+    ExplosionEffect particles;
 
     [Tooltip("Does not move before time exceeds this. Unit is seconds.")]
     public float startTime;
@@ -54,6 +55,7 @@ public class NavigationController : MonoBehaviour
             }
             CalculateWaypoints(path);
         }
+        particles = GetComponent<ExplosionEffect>();
 
       /*  TimeEffect te = new TimeEffect();
         te.t1 = 2;
@@ -210,41 +212,7 @@ public class NavigationController : MonoBehaviour
     }
 
 
-    /*void CalculateWaypoints(NavMeshPath path)
-    {
-        float currDist = 0;
-        waypoints = new List<Waypoint>(path.corners.Length);
-        Waypoint wpt = new Waypoint();
-        wpt.point = path.corners[0];
-        wpt.distFromStart = 0;
-        // set the rotation of the waypoint to be the initial rotation of the transform
-        wpt.rotation = transform.rotation;
-        waypoints.Add(wpt);
-
-        for (int i = 1; i < path.corners.Length; ++i)
-        {
-            // total distance so far
-            currDist += (path.corners[i] - path.corners[i - 1]).magnitude;
-
-            Waypoint pt = new Waypoint();
-            pt.point = path.corners[0];
-            pt.point = path.corners[i];
-            pt.distFromStart = currDist;
-
-            waypoints.Add(pt);
-
-            // TODO - check if this works correctly. Do we even need it? Could we just determine rotation on the fly
-            Quaternion rot = Quaternion.FromToRotation(Vector3.left, (waypoints[i - 1].point - waypoints[i].point));
-
-            // waypoints[i - 1].rotation = rot;
-            // since the waypoint[0] already has its rotation set up, we set the current one here. 
-            waypoints[i].rotation = rot;
-
-
-        }
-
-      //  waypoints[waypoints.Count - 1].rotation = waypoints[waypoints.Count - 2].rotation;
-    }*/
+ 
 
 
     protected void CalculateWaypoints(NavMeshPath path, int wptsOffset = 0)
@@ -318,7 +286,7 @@ public class NavigationController : MonoBehaviour
      */
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("COLLISION BETWEEN: " + transform.gameObject.name + " AND: " + collision.gameObject.name);
+       // Debug.Log("COLLISION BETWEEN: " + transform.gameObject.name + " AND: " + collision.gameObject.name);
         TimeWarper warper = collision.gameObject.GetComponent<TimeWarper>();
         if (warper != null)
         {
@@ -348,8 +316,12 @@ public class NavigationController : MonoBehaviour
                 ++slowBombCounter;
             }
             
-          //  speed *= warper.speedFactor;
         
+        }
+        if (collision.gameObject.tag == "Enemy")
+        {
+            Debug.Log("ENEMY");
+            particles.PlayParticlesAt(transform.position);
         }
     }
 

@@ -23,11 +23,11 @@ public class TimeManager : MonoBehaviour
     public bool targetTimeReached { get; private set; }
 
 
-    [SerializeField,
-     Tooltip("How many seconds progress in 1 second of real time. Gets multiplied with FixedDeltaTime " +
+ //   [SerializeField,
+    [ Tooltip("How many seconds progress in 1 second of real time. Gets multiplied with FixedDeltaTime " +
              "in FixedUpdate(). Make sure that the fixed timestep is small enough to accomodate correct " +
              "collision detection, we don't want cars passing through each other!)")]
-    float timeRate = 1;
+    public float timeRate = 1;
     float sign;
     
     public PostProcessHandler postProcHandler; 
@@ -71,6 +71,8 @@ public class TimeManager : MonoBehaviour
                 staminaBar.SetSliderValue(true);
                 backwards = true;
                 forward = false;
+                timeRate = 2;
+
             }
            
         }
@@ -83,6 +85,7 @@ public class TimeManager : MonoBehaviour
                 // postProcHandler.flipping = true;
                 backwards = false;
                 forward = true;
+                timeRate = 1;
             }
 
         }

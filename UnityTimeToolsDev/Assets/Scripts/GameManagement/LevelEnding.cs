@@ -17,7 +17,7 @@ public class LevelEnding : MonoBehaviour
 	bool isGameOver;
 	float timer;
 	bool hasAudioPlayed;
-
+    ExplosionEffect effect;
 
 	private void OnTriggerEnter(Collider other)
 	{
@@ -28,8 +28,14 @@ public class LevelEnding : MonoBehaviour
 		}
 	}
 
+    private void Start()
+    {
+        effect = GetComponent<ExplosionEffect>();
+        effect.PlayParticlesAt(transform.position);
+    }
 
-	public void GameOver()
+
+    public void GameOver()
 	{
 		isGameOver = true;
 	}

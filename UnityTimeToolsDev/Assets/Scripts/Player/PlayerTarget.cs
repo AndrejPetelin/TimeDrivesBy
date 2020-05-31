@@ -10,7 +10,10 @@ public class PlayerTarget : MonoBehaviour
     float from;
     float dest;
     float timer;
-    public float effectTime; 
+    public float effectTime;
+    Material mat;
+    public Transform playerTransform;
+    public float distanceOffset = 0.5f;
     public Vector3 position
     {
         get { return transform.position; }
@@ -27,6 +30,7 @@ public class PlayerTarget : MonoBehaviour
         //currentY = transform.position.y;
         
         nextY = transform.position.y + offset;
+        mat = GetComponent<MeshRenderer>().material;
     }
 
     private void Update()
@@ -49,5 +53,8 @@ public class PlayerTarget : MonoBehaviour
 
         float newY = Mathf.Lerp(from, dest, timer * effectTime);
         transform.position = new Vector3(transform.position.x, newY, transform.position.z);
+
+       // Debug.Log("DISTANCE: " + (Distance(playerTransform.position) - offset));
+        mat.SetFloat("_TransparencyMult", Mathf.Clamp(Distance(playerTransform.position) - distanceOffset, 0, 1));
     }
 }
