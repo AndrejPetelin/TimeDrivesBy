@@ -12,7 +12,9 @@ public class ClockHandler : MonoBehaviour
     public GameObject targetHand;
     public GameObject targetHandDisplayObject;
     public GameObject hand;
-    public PlayerManager manager;
+    public PlayerManager playerManager;
+
+    public PlayerController playerController;
 
     public TimeManager timeManager;
 
@@ -43,6 +45,12 @@ public class ClockHandler : MonoBehaviour
         if (!timeManager.targetTimeReached)
         {
             hand.transform.localRotation = Quaternion.Euler(0, 0, timeManager.gameTime * 6);
+        }
+        else if (timeManager.targetTimeReached && timeManager.gameTime >= playerController.fullPathTime)
+        {
+            targetHand.transform.localRotation = Quaternion.Euler(0, 0, playerController.fullPathTime * 6);
+            timeManager.gameTime = playerController.fullPathTime;
+
         }
     }
 
@@ -84,12 +92,12 @@ public class ClockHandler : MonoBehaviour
     public void Overlapping()
     {
         Debug.Log("OVERLAPPING");
-        manager.changingClock = true;
+        playerManager.changingClock = true;
     }
 
     public void NotOverlapping()
     {
         Debug.Log("NOT OVERLAPPING");
-        manager.changingClock = false;
+        playerManager.changingClock = false;
     }
 }

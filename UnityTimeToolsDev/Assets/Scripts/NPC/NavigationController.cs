@@ -27,6 +27,8 @@ public class NavigationController : MonoBehaviour
 
     protected float fullDistance { get => waypoints[waypoints.Count - 1].distFromStart; }
 
+    public float fullPathTime { get => fullDistance / speed; }
+
     public float turnDistance = 1f;
 
 

@@ -47,6 +47,7 @@ public class TimeManager : MonoBehaviour
         if (WithinRange(_gameTime, _targetTime, timeRate * Time.fixedDeltaTime))
         {
             _gameTime = _targetTime;
+
             targetTimeReached = true;
         }
         else
@@ -54,6 +55,7 @@ public class TimeManager : MonoBehaviour
             // figure out whether we have to add or subtract the timestep to _gameTime
             sign = Mathf.Sign(_targetTime - _gameTime);
             _gameTime += sign * timeRate * Time.fixedDeltaTime;
+
             targetTimeReached = false;
             
         }
