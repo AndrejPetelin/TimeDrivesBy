@@ -23,7 +23,6 @@ public class LevelEnding : MonoBehaviour
 	{
 		if (other.gameObject == player)
 		{
-			Debug.Log("Destination is reached");
 			hasDestinationReached = true;
 		}
 	}
@@ -43,6 +42,11 @@ public class LevelEnding : MonoBehaviour
 
 	private void Update()
 	{
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			SceneManager.LoadScene("MainMenuScene");
+		}
+
 		if (hasDestinationReached)
 		{
 			EndLevel(endLevelBGImage, false, endLevelAudio);
@@ -73,14 +77,13 @@ public class LevelEnding : MonoBehaviour
 			else
 			{
 				// If next index in Build Settings less than number of scenes in Build Settings load next scene
-				if (SceneManager.GetActiveScene().buildIndex + 1 < SceneManager.sceneCountInBuildSettings)
+				if (SceneManager.GetActiveScene().buildIndex + 2 < SceneManager.sceneCountInBuildSettings)
 				{
 					SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
 				}
-				else  //TODO
+				else
 				{
-					SceneManager.LoadScene("MainMenuScene");
-					//SceneManager.LoadScene(0);
+					SceneManager.LoadScene("WinScene");
 				}
 			}
 
