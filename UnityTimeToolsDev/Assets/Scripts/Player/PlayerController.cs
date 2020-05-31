@@ -9,6 +9,7 @@ using UnityEngine.AI;
 public class PlayerController : NavigationController
 {
     StaminaBar staminaBar;
+    public GameObject cinemachineTarget;
 
     public PostProcessHandler postProc;
     void Start()
@@ -102,6 +103,7 @@ public class PlayerController : NavigationController
             if (staminaBar.slider.value <= 0f)
             {
                 // TODO
+                FindObjectOfType<LevelEnding>().GameOver();
             }
             else
             {

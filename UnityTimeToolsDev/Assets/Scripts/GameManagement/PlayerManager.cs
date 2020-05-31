@@ -61,7 +61,7 @@ public class PlayerManager : MonoBehaviour
         }
 
 
-        if (!player.died) player.MoveTo(timeManager.gameTime);
+        player.MoveTo(timeManager.gameTime);
 
         if (player.died && timeManager.gameTime < player.deathTime)
         {
