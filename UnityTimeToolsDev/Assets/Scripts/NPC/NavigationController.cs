@@ -36,9 +36,30 @@ public class NavigationController : MonoBehaviour
     public List<TimeEffect> timeModifiers = new List<TimeEffect>();
 
     float currentGameTime;
+    
+    public float deathTime;
+    public bool died;
 
     int slowBombCounter;
     int fastBombCounter;
+
+
+    void DeathAtTime(float time)
+    {
+        deathTime = time;
+        died = true;
+
+        GetComponent<Collider>().enabled = false;
+        GetComponent<MeshRenderer>().enabled = false;
+    }
+
+    public void Respawn()
+    {
+        died = false;
+        GetComponent<Collider>().enabled = true;
+        GetComponent<MeshRenderer>().enabled = true;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -322,6 +343,8 @@ public class NavigationController : MonoBehaviour
         {
             Debug.Log("ENEMY");
             particles.PlayParticlesAt(transform.position);
+            
+            DeathAtTime(currentGameTime);
         }
     }
 

@@ -23,7 +23,12 @@ public class NPCManager : MonoBehaviour
 
         foreach (var npc in npcs)
         {
-            npc.MoveTo(currentGameTime);    
+            if (npc.died && currentGameTime < npc.deathTime)
+            {
+                npc.Respawn();
+            }
+            npc.MoveTo(currentGameTime);
+
         }
     }
 }
