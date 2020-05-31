@@ -20,6 +20,8 @@ public class TimeManager : MonoBehaviour
     bool backwards;
     bool forward = true;
 
+    public bool targetTimeReached { get; private set; }
+
 
     [SerializeField,
      Tooltip("How many seconds progress in 1 second of real time. Gets multiplied with FixedDeltaTime " +
@@ -45,12 +47,14 @@ public class TimeManager : MonoBehaviour
         if (WithinRange(_gameTime, _targetTime, timeRate * Time.fixedDeltaTime))
         {
             _gameTime = _targetTime;
+            targetTimeReached = true;
         }
         else
         {
             // figure out whether we have to add or subtract the timestep to _gameTime
             sign = Mathf.Sign(_targetTime - _gameTime);
             _gameTime += sign * timeRate * Time.fixedDeltaTime;
+            targetTimeReached = false;
             
         }
 

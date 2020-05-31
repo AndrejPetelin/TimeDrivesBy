@@ -10,12 +10,13 @@ public class ClockHandler : MonoBehaviour
    // public GameObject targetHandPrefab;
 
     public GameObject targetHand;
-    public GameObject displayObject;
+    public GameObject targetHandDisplayObject;
+    public GameObject hand;
 
     public TimeManager timeManager;
 
-    [SerializeField] float _time;
-    public float time { get { return _time; } private set { } }
+    [SerializeField] float _timeTarget;
+    public float timeTarget { get { return _timeTarget; } private set { } }
 
     Vector2 pivot;
     Camera cam;
@@ -28,7 +29,7 @@ public class ClockHandler : MonoBehaviour
         targetHand.transform.rotation = transform.rotation;
         
         targetHand.transform.SetParent(transform.parent);*/
-        displayObject.SetActive(false);
+        targetHandDisplayObject.SetActive(false);
 
         cam = Camera.main;
 
@@ -38,12 +39,15 @@ public class ClockHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (!timeManager.targetTimeReached)
+        {
+            hand.transform.localRotation = Quaternion.Euler(0, 0, timeManager.gameTime * 6);
+        }
     }
 
     public void ShowTargetHand(bool show)
     {
-        displayObject.SetActive(show);
+        targetHandDisplayObject.SetActive(show);
       //  Debug.Log("OVER CLOCK");
     }
 
@@ -66,13 +70,13 @@ public class ClockHandler : MonoBehaviour
             angle = 360f - angle;
         }
 
-        _time = angle / 6f;
+        _timeTarget = angle / 6f;
         targetHand.transform.localRotation = Quaternion.Euler(0, 0, angle);
     }
     
 
     public void SetTargetTime()
     {
-        timeManager.gameTime = time;
+        timeManager.gameTime = timeTarget;
     }
 }
