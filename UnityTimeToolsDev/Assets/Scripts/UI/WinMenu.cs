@@ -10,4 +10,8 @@ public class WinMenu : MonoBehaviour
 		SceneManager.LoadScene("MainMenuScene2");
 	}
 
+	public void PlayAgain()
+	{
+		SceneManager.LoadScene("Level1");
+	}
 }
