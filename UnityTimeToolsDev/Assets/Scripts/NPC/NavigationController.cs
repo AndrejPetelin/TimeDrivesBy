@@ -35,7 +35,7 @@ public class NavigationController : MonoBehaviour
 
     public List<TimeEffect> timeModifiers = new List<TimeEffect>();
 
-    float currentGameTime;
+    protected float currentGameTime;
     
     public float deathTime;
     public bool died;
@@ -44,7 +44,7 @@ public class NavigationController : MonoBehaviour
     int fastBombCounter;
 
 
-    void DeathAtTime(float time)
+    protected void DeathAtTime(float time)
     {
         deathTime = time;
         died = true;
