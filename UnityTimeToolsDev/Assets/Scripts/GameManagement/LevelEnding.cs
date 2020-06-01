@@ -13,6 +13,8 @@ public class LevelEnding : MonoBehaviour
 	public CanvasGroup gameOverBGImage;
 	public AudioSource gameOverAudio;
 
+	AudioClipControls music;
+
 	bool hasDestinationReached;
 	bool isGameOver;
 	float timer;
@@ -31,6 +33,8 @@ public class LevelEnding : MonoBehaviour
     {
         effect = GetComponent<ExplosionEffect>();
         effect.PlayParticlesAt(transform.position);
+
+		music = FindObjectOfType<AudioClipControls>();
     }
 
 
@@ -49,10 +53,12 @@ public class LevelEnding : MonoBehaviour
 
 		if (hasDestinationReached)
 		{
+			music.VolumeTransition(0f, 0.1f);
 			EndLevel(endLevelBGImage, false, endLevelAudio);
 		}
 		else if (isGameOver) 
 		{
+			music.VolumeTransition(0f, 0.1f);
 			EndLevel(gameOverBGImage, true, gameOverAudio);
 		}
 	}
