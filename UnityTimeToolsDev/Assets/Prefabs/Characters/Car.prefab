@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5800971784986957894}
   - component: {fileID: 269574351554995391}
   - component: {fileID: 7539170272128043365}
+  - component: {fileID: 4428137304248545184}
   m_Layer: 0
   m_Name: Car
   m_TagString: Untagged
@@ -101,4 +102,21 @@ MonoBehaviour:
   target: {fileID: 0}
   waypoints: []
   turnDistance: 1
+  deathTime: 0
+  died: 0
   minSpeed: 0.001
+  cinemachineTarget: {fileID: 0}
+  postProc: {fileID: 0}
+--- !u!65 &4428137304248545184
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1981986796274176099}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.71, y: 0.9923185, z: 2.17}
+  m_Center: {x: 0, y: 0.026220858, z: 0.1682664}
