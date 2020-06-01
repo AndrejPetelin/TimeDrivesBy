@@ -48,7 +48,7 @@ public class LevelEnding : MonoBehaviour
 	{
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
-			SceneManager.LoadScene("MainMenuScene");
+			SceneManager.LoadScene("MainMenuScene2");
 		}
 
 		if (hasDestinationReached)
