@@ -8,13 +8,15 @@ public class SettingsMenu : MonoBehaviour
 	public AudioMixer audioMixer;
     
 
-	public void SetVolume(float volume)
+	public void SetVolumeMusic(float volume)
 	{
-		audioMixer.SetFloat("volume", volume);
-        
-        
+		audioMixer.SetFloat("volumeMusic", volume); 
 	}
 
+	public void SetVolumeSounds(float volume)
+	{
+		audioMixer.SetFloat("volumeSFX", volume);
+	}
 
 	public void SetFullScreen(bool isFullScreen)
 	{
