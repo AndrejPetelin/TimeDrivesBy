@@ -18,6 +18,9 @@ public class ClockHandler : MonoBehaviour
 
     public TimeManager timeManager;
 
+    AudioClipControls music;
+    bool musicSlowed;
+
     [SerializeField] float _timeTarget;
     public float timeTarget { get { return _timeTarget; } private set { } }
 
@@ -38,6 +41,7 @@ public class ClockHandler : MonoBehaviour
         cam = Camera.main;
 
         pivot = cam.WorldToScreenPoint(transform.position);
+        music = FindObjectOfType<AudioClipControls>();
     }
 
     // Update is called once per frame
@@ -63,7 +67,16 @@ public class ClockHandler : MonoBehaviour
         }
        // else timeManager.timeRate = 2;
 
-
+        if (!musicSlowed && timeManager.backwards)
+        {
+            music.PitchTransition(0.5f, 0.2f);
+            musicSlowed = true;
+        }
+        else if (musicSlowed && timeManager.forward)
+        {
+            musicSlowed = false;
+            music.PitchTransition(1f, 0.2f);
+        }
     }
 
     public void ShowTargetHand(bool show)

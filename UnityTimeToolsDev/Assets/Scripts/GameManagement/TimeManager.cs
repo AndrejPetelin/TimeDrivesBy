@@ -17,8 +17,8 @@ public class TimeManager : MonoBehaviour
     }
     public StaminaBar staminaBar;
     public float coolDown;
-    bool backwards;
-    bool forward = true;
+    public bool backwards;
+    public bool forward = true;
 
     public bool targetTimeReached { get; private set; }
 
