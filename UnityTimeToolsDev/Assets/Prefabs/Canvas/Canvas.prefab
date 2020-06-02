@@ -420,7 +420,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -272.50464, y: 51.651184}
+  m_AnchoredPosition: {x: -272.50464, y: 51.651123}
   m_SizeDelta: {x: 400, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1375695782
@@ -496,6 +496,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d76eda6f406bf145ad125a189d2fc0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slider: {fileID: 0}
   image: {fileID: 1270650788}
   colorGradient:
     serializedVersion: 2
@@ -528,7 +529,7 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   allowRegeneration: 0
   recoverRate: 0.01
-  totalRewindTime: 30
+  totalRewindTime: 45
 --- !u!1 &1571021460
 GameObject:
   m_ObjectHideFlags: 0
@@ -713,9 +714,9 @@ RectTransform:
   m_Father: {fileID: 8640927699514237842}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 682.15216, y: -488.01483}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: -275.97058, y: 50.00009}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6511132110078691371
