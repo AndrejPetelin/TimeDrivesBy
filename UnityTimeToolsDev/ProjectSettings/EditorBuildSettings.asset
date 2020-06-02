@@ -9,21 +9,21 @@ EditorBuildSettings:
     path: 
     guid: 00000000000000000000000000000000
   - enabled: 1
-    path: Assets/_Scenes/MainMenuScene2.unity
+    path: Assets/_Scenes/LevelsForBuild/MainMenuScene2.unity
     guid: 5d74565bb8e114941a0e937ef9082ee0
   - enabled: 1
-    path: Assets/_Scenes/Level1.unity
+    path: Assets/_Scenes/LevelsForBuild/Level1.unity
     guid: 16729b69e57114d4dade47df7c4e8298
   - enabled: 1
-    path: Assets/_Scenes/Levels/Level3_Bella.unity
+    path: Assets/_Scenes/LevelsForBuild/Level3_Bella.unity
     guid: 06509507cef0e2f4e8ebb3015dfeee2a
   - enabled: 1
-    path: Assets/_Scenes/Levels/Level2_Irene.unity
+    path: Assets/_Scenes/LevelsForBuild/Level2_Irene.unity
     guid: 5515b76c1d096854f99e6afafdfa432e
   - enabled: 1
-    path: Assets/_Scenes/Levels/Level4.unity
+    path: Assets/_Scenes/LevelsForBuild/Level4.unity
     guid: 2a4c79c3b5a673442a7a27e6034b4fef
   - enabled: 1
-    path: Assets/_Scenes/Levels/WinScene.unity
+    path: Assets/_Scenes/LevelsForBuild/WinScene.unity
     guid: ac0235971063f22499d14a01cebf1722
   m_configObjects: {}
