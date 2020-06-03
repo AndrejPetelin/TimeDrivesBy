@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class PausedSceneLoader : MonoBehaviour
 {
-	private string pauseScene = "PausedScene3";
+	private string pauseScene = "PausedScene";
 	public bool isPaused = false;
 	bool isLoaded = false;
 
