@@ -29,4 +29,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Scenes/LevelsForBuild/WinScene.unity
     guid: ac0235971063f22499d14a01cebf1722
+  - enabled: 1
+    path: Assets/_Scenes/LevelsForBuild/PausedScene.unity
+    guid: a223d20988e37e2408369c86976bf600
   m_configObjects: {}
