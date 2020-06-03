@@ -13,6 +13,7 @@ public class PostProcessHandler : MonoBehaviour
     public Volume dyingVolume;
     //Volume currentVolume;
     public float effectSpeed;
+    public float dyingSpeed = 3;
     public bool flipping;
     bool dying;
     DyingPostProcess dyingPostProc;
@@ -98,7 +99,7 @@ public class PostProcessHandler : MonoBehaviour
         dying = false;
         // flipping = false;
 
-        yield return new WaitForSeconds(10);
+        yield return new WaitForSeconds(dyingSpeed);
         dyingVolume.weight = 0;
         regularVolume.weight = 1;
         backwardsVolume.weight = 0;

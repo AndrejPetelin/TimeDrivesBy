@@ -10,6 +10,7 @@ public class PlayerController : NavigationController
 {
     StaminaBar staminaBar;
     public GameObject cinemachineTarget;
+    public bool crashing;
 
     public PostProcessHandler postProc;
     void Start()
@@ -97,7 +98,7 @@ public class PlayerController : NavigationController
         {
             //Debug.Log("COLL WITH ENEMY");
             postProc.FlipToDying();
-
+            crashing = true;
             
 
             if (staminaBar.slider.value <= 0f)

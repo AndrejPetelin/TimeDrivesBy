@@ -27,6 +27,7 @@ public class ClockHandler : MonoBehaviour
     Vector2 pivot;
     Camera cam;
     float previousAngle;
+    public bool dragging = false;
 
     // Start is called before the first frame update
     void Start()
@@ -110,6 +111,7 @@ public class ClockHandler : MonoBehaviour
         Debug.Log("ANGLE: " + angle);
         targetHand.transform.localRotation = Quaternion.Euler(0, 0, angle);
         previousAngle = angle;
+        dragging = true;
     }
     
     /**

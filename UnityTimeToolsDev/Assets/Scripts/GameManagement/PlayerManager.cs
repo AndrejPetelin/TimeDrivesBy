@@ -19,7 +19,9 @@ public class PlayerManager : MonoBehaviour
     public bool placingTimeBomb;
     public bool changingClock;
     public bool clockSynching;
-
+    public bool placed = false;
+    public bool respawned = false;
+    public bool timeBombPlaced = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -54,6 +56,7 @@ public class PlayerManager : MonoBehaviour
                    
                     player.AddWaypointAtCurrentPos(timeManager.gameTime);
                     player.ExtendPath();
+                    placed = true;
                     Debug.Log("HERE");
                 }
             }
@@ -66,6 +69,7 @@ public class PlayerManager : MonoBehaviour
         if (player.died && timeManager.gameTime < player.deathTime)
         {
             player.Respawn();
+            respawned = true;
         }
 
     }

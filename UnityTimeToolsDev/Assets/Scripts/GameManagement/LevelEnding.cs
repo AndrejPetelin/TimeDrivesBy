@@ -43,8 +43,14 @@ public class LevelEnding : MonoBehaviour
 		isGameOver = true;
 	}
 
+    public void TriggerLevelEnd()
+    {
+        Debug.Log("TRIGGERED");
+        hasDestinationReached = true;
+    }
 
-	private void Update()
+
+    private void Update()
 	{
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{

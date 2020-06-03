@@ -15,6 +15,7 @@ public class TimeBomb : MonoBehaviour
     public PlayerManager playerManager;
     public LayerMask clickableLayer;
 	public AudioSource timeBombPlacement;
+    
 
 
 	// Start is called before the first frame update
@@ -82,7 +83,9 @@ public class TimeBomb : MonoBehaviour
             timeBomb.GetComponent<Collider>().enabled = true;
 			timeBombPlacement.Play();
 			playerManager.placingTimeBomb = true;
+            playerManager.timeBombPlaced = true;
             Debug.Log("MOUSE CLICK, PTB: " + playerManager.placingTimeBomb);
+          
             StartCoroutine(EnableTargetPlace());
           //  playerManager.placingTimeBomb = false;
 		}

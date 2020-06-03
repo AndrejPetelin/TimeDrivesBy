@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/_Scenes/LevelsForBuild/MainMenuScene2.unity
     guid: 5d74565bb8e114941a0e937ef9082ee0
   - enabled: 1
+    path: Assets/_Scenes/LevelsForBuild/TutorialScene_Irene.unity
+    guid: d860b053e5da16046bc450bae48397cf
+  - enabled: 1
     path: Assets/_Scenes/LevelsForBuild/Level1.unity
     guid: 16729b69e57114d4dade47df7c4e8298
   - enabled: 1
