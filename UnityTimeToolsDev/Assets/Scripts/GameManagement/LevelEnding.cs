@@ -52,11 +52,6 @@ public class LevelEnding : MonoBehaviour
 
     private void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.Escape))
-		{
-			SceneManager.LoadScene("MainMenuScene2");
-		}
-
 		if (hasDestinationReached)
 		{
 			music.VolumeTransition(0f, 0.1f);
@@ -88,7 +83,7 @@ public class LevelEnding : MonoBehaviour
 			}
 			else
 			{
-				// If next index in Build Settings less than number of scenes in Build Settings load next scene
+				// If it's not the last level load next scene
 				if (SceneManager.GetActiveScene().buildIndex + 2 < SceneManager.sceneCountInBuildSettings)
 				{
 					SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
