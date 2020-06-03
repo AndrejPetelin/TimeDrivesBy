@@ -63,11 +63,12 @@ public class PlayerManager : MonoBehaviour
         
         }
 
-
+       
         player.MoveTo(timeManager.gameTime);
 
         if (player.died && timeManager.gameTime < player.deathTime)
         {
+            Debug.Log("GAMETIME: " + timeManager.gameTime + " DEATH: " + player.deathTime);
             player.Respawn();
             respawned = true;
         }

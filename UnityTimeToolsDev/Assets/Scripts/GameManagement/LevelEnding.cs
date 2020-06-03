@@ -43,10 +43,9 @@ public class LevelEnding : MonoBehaviour
 		isGameOver = true;
 	}
 
-    public void TriggerLevelEnd()
+    public bool DestinationReached()
     {
-        Debug.Log("TRIGGERED");
-        hasDestinationReached = true;
+        return hasDestinationReached;
     }
 
 

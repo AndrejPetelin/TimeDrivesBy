@@ -93,7 +93,7 @@ public class PlayerController : NavigationController
 
     private void OnCollisionEnter(Collision collision)
     {
-      //  Debug.Log("CAR COLLIDES WITH: " + collision.gameObject.name + " TAG: " + collision.gameObject.tag);
+        Debug.Log("CAR COLLIDES WITH: " + collision.gameObject.name + " TAG: " + collision.gameObject.tag);
         if (collision.gameObject.tag == "Enemy")
         {
             //Debug.Log("COLL WITH ENEMY");
@@ -109,6 +109,7 @@ public class PlayerController : NavigationController
             }
             else
             {
+                Debug.Log("DAT: " + currentGameTime);
                 DeathAtTime(currentGameTime);
             }
         }

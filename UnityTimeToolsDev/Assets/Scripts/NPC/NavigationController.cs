@@ -55,6 +55,7 @@ public class NavigationController : MonoBehaviour
 
     public void Respawn()
     {
+        Debug.Log("RESPAWNING: " + gameObject.name);
         died = false;
         GetComponent<Collider>().enabled = true;
         GetComponent<MeshRenderer>().enabled = true;

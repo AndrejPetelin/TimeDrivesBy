@@ -25,8 +25,10 @@ public class IntroUI : MonoBehaviour
     public PlayerManager playerManager;
     public ClockHandler clock;
     public PlayerController playerController;
+    public LevelEnding ending;
     public GameObject particlesStart;
     public GameObject particlesBomb;
+    public GameObject button;
     // Start is called before the first frame update
     void Start()
     {
@@ -37,6 +39,14 @@ public class IntroUI : MonoBehaviour
         funcArray[3] = PlayerRespawned;
         funcArray[4] = TimeBombPlaced;
         particlesStart.SetActive(true);
+    }
+
+    private void Update()
+    {
+        if (ending.DestinationReached())
+        {
+            OnDisable();
+        }
     }
 
     bool ClickedOnGround()
@@ -77,6 +87,7 @@ public class IntroUI : MonoBehaviour
         for (int i = 0; i < texts.Length; ++i)
         {
             texts[i].SetActive(false);
+            button.SetActive(false);
         }
         if (startSequence != null)
             StopCoroutine(startSequence);
@@ -112,6 +123,7 @@ public class IntroUI : MonoBehaviour
         {
             texts[i].SetActive(false);
         }
+        button.SetActive(false);
 
       //  gameObject.SetActive(false);
     }
