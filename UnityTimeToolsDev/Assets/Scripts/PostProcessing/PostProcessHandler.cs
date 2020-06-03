@@ -16,10 +16,12 @@ public class PostProcessHandler : MonoBehaviour
     public float dyingSpeed = 3;
     public bool flipping;
     bool dying;
+    public bool dead; 
     DyingPostProcess dyingPostProc;
     List<Coroutine> running;
     void Start()
     {
+        dead = false;
         regularVolume.weight = 1;
         backwardsVolume.weight = 0;
         dyingVolume.weight = 0;
@@ -64,7 +66,7 @@ public class PostProcessHandler : MonoBehaviour
 
     IEnumerator Flip(Volume increase, Volume decrease)
     {
-        Debug.Log("COROUTINE");
+       // Debug.Log("COROUTINE");
         float timer = 0;
 
         while (timer < effectSpeed)
@@ -80,7 +82,7 @@ public class PostProcessHandler : MonoBehaviour
 
     IEnumerator Flip(Volume increase, Volume decrease, Volume decrease2)
     {
-        // Debug.Log("COROUTINE");
+        // Debug.Log("COROUTINE2");
         dying = true;
         foreach (var cor in running) StopCoroutine(cor);
         float timer = 0;
@@ -99,10 +101,25 @@ public class PostProcessHandler : MonoBehaviour
         dying = false;
         // flipping = false;
 
-        yield return new WaitForSeconds(dyingSpeed);
-        dyingVolume.weight = 0;
+        yield return new WaitForSeconds(dyingSpeed/2);
+
+        if (! dead)
+        {
+            float timer2 = 0;
+
+            while (timer2 < dyingSpeed / 2)
+            {
+                timer2 += Time.deltaTime;
+                dyingVolume.weight = Mathf.Lerp(1, 0, timer2);
+                regularVolume.weight = Mathf.Lerp(0, 1, timer2);
+                backwardsVolume.weight = Mathf.Lerp(1, 0, timer2);
+                yield return null;
+            }
+        }
+        
+      /*  dyingVolume.weight = 0;
         regularVolume.weight = 1;
-        backwardsVolume.weight = 0;
+        backwardsVolume.weight = 0;*/
 
     }
 }

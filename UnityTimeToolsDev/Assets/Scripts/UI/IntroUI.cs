@@ -108,6 +108,11 @@ public class IntroUI : MonoBehaviour
             particlesStart.SetActive(false);
         }
 
+        for (int i = 0; i < texts.Length; ++i)
+        {
+            texts[i].SetActive(false);
+        }
+
       //  gameObject.SetActive(false);
     }
 

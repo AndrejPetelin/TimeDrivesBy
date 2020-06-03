@@ -104,6 +104,7 @@ public class PlayerController : NavigationController
             if (staminaBar.slider.value <= 0f)
             {
                 // TODO
+                postProc.dead = true;
                 FindObjectOfType<LevelEnding>().GameOver();
             }
             else
