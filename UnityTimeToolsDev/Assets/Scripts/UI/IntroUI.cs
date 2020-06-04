@@ -83,6 +83,11 @@ public class IntroUI : MonoBehaviour
 
     public void OnDisable()
     {
+        if (!ending.DestinationReached())
+        {
+            ending.TriggerLevelEnding();
+        }
+       
         // gameObject.SetActive(false);
         for (int i = 0; i < texts.Length; ++i)
         {

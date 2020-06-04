@@ -51,6 +51,7 @@ public class LevelEnding : MonoBehaviour
     // called from the Button in the tutorial UI
     public void TriggerLevelEnding()
     {
+        Debug.Log("TRIGGERED LEVEL ENDING");
         hasDestinationReached = true;
     }
 
