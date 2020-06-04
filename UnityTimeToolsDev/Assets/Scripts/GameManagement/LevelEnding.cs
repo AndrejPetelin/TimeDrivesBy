@@ -48,6 +48,12 @@ public class LevelEnding : MonoBehaviour
         return hasDestinationReached;
     }
 
+    // called from the Button in the tutorial UI
+    public void TriggerLevelEnding()
+    {
+        hasDestinationReached = true;
+    }
+
 
     private void Update()
 	{

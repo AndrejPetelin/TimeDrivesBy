@@ -8,7 +8,15 @@ public class PausedSceneLoader : MonoBehaviour
 	private string pauseScene = "PausedScene";
 	public bool isPaused = false;
 	bool isLoaded = false;
+  
+    Camera mainCam;
 
+
+    private void Start()
+    {
+        mainCam = Camera.main;
+    
+    }
 
     // Update is called once per frame
     void Update()
@@ -17,6 +25,8 @@ public class PausedSceneLoader : MonoBehaviour
 		{
 			if (!isPaused)
 			{
+                Globals.camPosition = mainCam.transform.position;
+                Globals.camRotation = mainCam.transform.rotation;
 				PauseGame();				
 			}
 			else
