@@ -56,7 +56,7 @@ public class ClockHandler : MonoBehaviour
         
         else if (timeManager.targetTimeReached && timeManager.gameTime > playerController.fullPathTime)
         {
-            Debug.Log("FPT: " + playerController.fullPathTime);
+          //  Debug.Log("FPT: " + playerController.fullPathTime);
             targetHand.transform.localRotation = Quaternion.Euler(0, 0, playerController.fullPathTime * 6);
             timeManager.gameTime = playerController.fullPathTime;
            // timeManager.timeRate = 1;
@@ -88,7 +88,7 @@ public class ClockHandler : MonoBehaviour
 
     public void Test(BaseEventData data)
     {
-        Debug.Log("OVER CLOCK");
+      //  Debug.Log("OVER CLOCK");
         Debug.Log(data.currentInputModule.input.mousePosition );
     }
 
@@ -104,11 +104,11 @@ public class ClockHandler : MonoBehaviour
         {
             angle = 360f - angle;
         }
-        Debug.Log("PREV: " + previousAngle + " CURR: " + angle);
+      //  Debug.Log("PREV: " + previousAngle + " CURR: " + angle);
         if (previousAngle < 20 && angle > 320) return;
         if (previousAngle > 340 && angle < 20) return;
         _timeTarget = angle / 6f;
-        Debug.Log("ANGLE: " + angle);
+      //  Debug.Log("ANGLE: " + angle);
         targetHand.transform.localRotation = Quaternion.Euler(0, 0, angle);
         previousAngle = angle;
         dragging = true;
@@ -124,13 +124,13 @@ public class ClockHandler : MonoBehaviour
 
     public void Overlapping()
     {
-        Debug.Log("OVERLAPPING");
+      //  Debug.Log("OVERLAPPING");
         playerManager.changingClock = true;
     }
 
     public void NotOverlapping()
     {
-        Debug.Log("NOT OVERLAPPING");
+      //  Debug.Log("NOT OVERLAPPING");
         playerManager.changingClock = false;
     }
 }
