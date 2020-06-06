@@ -156,7 +156,11 @@ public class NavigationController : MonoBehaviour
         {
             // i think this should be < instead of > ? It works this way. The idea is to get our current index
             // So it should only consider the waypoints behind us. 
-            if (waypoints[i].distFromStart < distAtT)
+          /*  if (gameObject.name == "Car")
+            {
+                Debug.Log("I: " + i + " DISTFROMSTART: " + waypoints[i].distFromStart + " DISTATT: " + distAtT);
+            }*/
+            if (waypoints[i].distFromStart > distAtT)
             {
                 float distA = waypoints[i - 1].distFromStart;
                 float distB = waypoints[i].distFromStart;
@@ -165,14 +169,14 @@ public class NavigationController : MonoBehaviour
                // both waypoints are at the same place. 
                 if (Mathf.Approximately((distB - distA), 0)) continue;
                 float t = (distAtT - distA) / (distB - distA);
-                return i + t;
+                return (i -1) + t;
             }
         }
 
-        //return waypoints.Count;
+        return waypoints.Count - 1;
         // changed the return, considering the case the loop never starts, which is when the count is zero. 
         // Probably the issue i had before was because of the if statement with the wrong > anyway. Too brain fried now!!
-        return 0;
+      //  return 0;
     }
     float prevT;
     float prevTModT;
@@ -295,6 +299,15 @@ public class NavigationController : MonoBehaviour
            
 
 
+        }
+        if (gameObject.name == "Car")
+        {
+            Debug.Log("Are we here?");
+            for (int i = 1; i < waypoints.Count; ++i)
+            {
+
+                Debug.DrawLine(waypoints[i - 1].point, waypoints[i].point, Color.red, 5f);
+            }
         }
        // Debug.Log("LENGTH: " + waypoints.Count);
 

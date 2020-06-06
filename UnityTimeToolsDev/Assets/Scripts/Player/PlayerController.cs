@@ -32,9 +32,9 @@ public class PlayerController : NavigationController
     {
         // we're currently here on the path
         float pathTravelled = IndexAtTime(time);
-        Debug.Log("TIME: " + time + " PT: " + pathTravelled);
+       // Debug.Log("TIME: " + time + " PT: " + pathTravelled);
         int index = (int)pathTravelled;
-        Debug.Log("INDEX: " + index);
+      //  Debug.Log("INDEX: " + index);
         // remove all waypoints on the timeline after our current location
         for (int i = waypoints.Count - 1; i > index; --i)
         {
@@ -93,7 +93,7 @@ public class PlayerController : NavigationController
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("CAR COLLIDES WITH: " + collision.gameObject.name + " TAG: " + collision.gameObject.tag);
+      //  Debug.Log("CAR COLLIDES WITH: " + collision.gameObject.name + " TAG: " + collision.gameObject.tag);
         if (collision.gameObject.tag == "Enemy")
         {
             //Debug.Log("COLL WITH ENEMY");
