@@ -71,6 +71,7 @@ public class NavigationController : MonoBehaviour
         {
             startPoint = hit.position;
             NavMesh.CalculatePath(startPoint, target.position, NavMesh.AllAreas, path);
+          //  Debug.Log("NAME: " + gameObject.name + " LENGTH: " + path.corners.Length);
             for (int i = 0; i < path.corners.Length; ++i)
             {
                 path.corners[i].y = 0f;
@@ -89,6 +90,7 @@ public class NavigationController : MonoBehaviour
 
     Vector3 PositionAtTime(float time)
     {
+        if (waypoints.Count < 1) Debug.Log("NAME: " + gameObject.name);
         // if we're not yet at start time don't start driving yet
         if (time < startTime) return waypoints[0].point;
 
