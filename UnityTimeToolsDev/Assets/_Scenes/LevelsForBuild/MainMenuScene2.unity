@@ -381,7 +381,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Cebuana
+  m_text: Gobusto, Cebuana
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 78c4d0b9ae314dd448e19a1868e278cd, type: 2}
   m_sharedMaterial: {fileID: 639840039330417914, guid: 78c4d0b9ae314dd448e19a1868e278cd,
@@ -452,10 +452,10 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 121190044}
-    characterCount: 7
+    characterCount: 16
     spriteCount: 0
-    spaceCount: 0
-    wordCount: 1
+    spaceCount: 1
+    wordCount: 2
     linkCount: 0
     lineCount: 1
     pageCount: 1
@@ -4104,7 +4104,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 923474356}
-    characterCount: 67
+    characterCount: 66
     spriteCount: 0
     spaceCount: 10
     wordCount: 10
