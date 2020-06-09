@@ -355,7 +355,7 @@ public class NavigationController : MonoBehaviour
             
         
         }
-        if (collision.gameObject.tag == "Enemy")
+        if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "Player")
         {
             Debug.Log("ENEMY");
             particles.PlayParticlesAt(transform.position);
