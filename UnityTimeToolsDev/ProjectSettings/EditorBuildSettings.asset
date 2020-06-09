@@ -18,18 +18,21 @@ EditorBuildSettings:
     path: Assets/_Scenes/LevelsForBuild/Level1.unity
     guid: 16729b69e57114d4dade47df7c4e8298
   - enabled: 1
-    path: Assets/_Scenes/LevelsForBuild/Level3_Bella.unity
-    guid: 06509507cef0e2f4e8ebb3015dfeee2a
+    path: Assets/_Scenes/LevelsForBuild/Level2.unity
+    guid: 007a404b389d444418658573841220e7
   - enabled: 1
-    path: Assets/_Scenes/LevelsForBuild/Level2_Irene.unity
-    guid: 5515b76c1d096854f99e6afafdfa432e
+    path: Assets/_Scenes/LevelsForBuild/Level3.unity
+    guid: 6236c4d2cf9afc140b74b656aea996ed
   - enabled: 1
     path: Assets/_Scenes/LevelsForBuild/Level4.unity
+    guid: 06509507cef0e2f4e8ebb3015dfeee2a
+  - enabled: 1
+    path: Assets/_Scenes/LevelsForBuild/Level5.unity
     guid: 2a4c79c3b5a673442a7a27e6034b4fef
   - enabled: 1
     path: Assets/_Scenes/LevelsForBuild/WinScene.unity
     guid: ac0235971063f22499d14a01cebf1722
   - enabled: 1
-    path: Assets/_Scenes/LevelsForBuild/PausedScene.unity
-    guid: a223d20988e37e2408369c86976bf600
+    path: Assets/_Scenes/LevelsForBuild/PausedScene_Asli.unity
+    guid: 845b6ec9fe10a7448b34baa636755a42
   m_configObjects: {}
