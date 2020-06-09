@@ -50,16 +50,20 @@ public class NavigationController : MonoBehaviour
         died = true;
 
         GetComponent<Collider>().enabled = false;
-        GetComponent<MeshRenderer>().enabled = false;
-    }
+		//GetComponent<MeshRenderer>().enabled = false;
+		foreach (MeshRenderer rend in GetComponentsInChildren <MeshRenderer>())
+			rend.enabled = false;
+	}
 
     public void Respawn()
     {
         Debug.Log("RESPAWNING: " + gameObject.name);
         died = false;
         GetComponent<Collider>().enabled = true;
-        GetComponent<MeshRenderer>().enabled = true;
-    }
+		//GetComponent<MeshRenderer>().enabled = true;
+		foreach (MeshRenderer rend in GetComponentsInChildren<MeshRenderer>())
+			rend.enabled = true;
+	}
 
     // Start is called before the first frame update
     void Start()
